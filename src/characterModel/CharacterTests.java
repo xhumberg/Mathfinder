@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class CharacterTests {
+class CreationAndVariableSetting {
 
 	@Test
 	void basicCharacterCreation() {
