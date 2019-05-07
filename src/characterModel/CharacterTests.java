@@ -4,11 +4,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class CharacterTests {
+class CreationAndVariableSetting {
 
 	@Test
-	void defaultTest() {
-		fail("Not yet implemented");
+	void basicCharacterCreation() {
+		MFCharacter Jo;
+		//This test fails if it throws any kind of error
+	}
+	
+	@Test
+	void getNameTest() {
+		MFCharacter Jo = new MFCharacter("Jo");
+		assertEquals(Jo.name, "Jo");
 	}
 
 	
