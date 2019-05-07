@@ -1,52 +1,61 @@
 package characterModel;
 
 public class MFCharacter {
-	String name;
-	int str;
+	private String name;
+	private String race;
+	private String pfclass;
+	private int level;
+	private String alignment;
+	private String size;
+	private String type;
+	private Bonus AC;
+	private Bonus TouchAC;
+	private Bonus FFAC;
+	//HP
+	private Bonus fort;
+	private Bonus ref;
+	private Bonus will;
+	private Bonus speed;
+	//Melee attacks
+	//Ranged attacks
+	//Special attacks
+	private Bonus str;
+	private Bonus dex;
+	private Bonus con;
+	private Bonus pfint;
+	private Bonus wis;
+	private Bonus cha;
+	private int BAB;
+	private Bonus CMB;
+	private Bonus CMD;
+	//Feats
+	//Skills
+	//Languages
+	//SQ
+	//Combat Gear
+	//Other Geat
+	//Other
 	
-	public MFCharacter(String name) {
-		this.name = name;
+	private MFCharacter() {
+		name = "Dave";
+		race = "Human";
+		pfclass = "Barbarian";
+		level = 1;
+		alignment = "N";
+		size = "Medium";
+		type = "Humanoid (Human)";
+		AC = new Bonus(10);
+		TouchAC = new Bonus(10);
+		FFAC = new Bonus(10);
+		//TODO: Continue test.
 	}
 	
-	/* A character has:
-	 * Info
-	 *    Name
-	 *    Race
-	 *    Class
-	 *    Level
-	 *    Alignment
-	 *    Size
-	 *    Type
-	 * Defense
-	 *    AC
-	 *    Touch AC
-	 *    FF AC
-	 *    HP
-	 *    Fot save
-	 *    Ref save
-	 *    Will save
-	 *    Defensive Abilities
-	 * Offense
-	 *    Speed
-	 *    Melee Attacks
-	 *    Ranged Attacks
-	 *    Special Attacks
-	 * Statistics
-	 *    Str
-	 *    Dex
-	 *    Con
-	 *    Int
-	 *    Wis
-	 *    Cha
-	 *    BAB
-	 *    CMB
-	 *    CMD
-	 *    Feats
-	 *    Skills
-	 *    Languages
-	 *    Special Qualities
-	 *    Combat Gear
-	 *    Other Gear
-	 *    Other
-	 */
+	public String getName() {
+		return new String(name);
+	}
+	
+	public MFCharacter(String name) {
+		this();
+		this.name = name;
+	}
 }
