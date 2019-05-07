@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class MFCharacterTest {
+class CreationAndVariableSetting {
 
 	@Test
 	void basicCharacterCreation() {
@@ -18,8 +18,6 @@ class MFCharacterTest {
 		assertEquals(Jo.name, "Jo");
 	}
 
-	@Test
-	void level6BarbSheet() {
-		
-	}
+	
+	
 }
