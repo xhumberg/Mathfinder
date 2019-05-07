@@ -8,8 +8,6 @@ public class MFCharacter {
 		this.name = name;
 	}
 	
-	//Stash me
-	
 	/* A character has:
 	 * Info
 	 *    Name
