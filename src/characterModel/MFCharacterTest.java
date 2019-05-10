@@ -13,6 +13,7 @@ class MFCharacterTest {
 
 	@Test
 	void level6BarbSheet() {
-		
+		MFCharacter Raider = new MFCharacter("Raider");
+		Raider.getCharacterSheet();
 	}
 }

@@ -73,4 +73,8 @@ public class Bonus {
 		if (nonStackingBonuses == null)
 			nonStackingBonuses = new HashMap<String, Integer>();
 	}
+	
+	public String toString() {
+		return String.valueOf(getValue());
+	}
 }
