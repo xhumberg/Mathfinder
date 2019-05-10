@@ -15,17 +15,17 @@ class BonusTest {
 	@Test
 	void basicTest1() {
 		Bonus strength = new Bonus();
-		strength.addBonus("Base", 14);
-		strength.addBonus("Morale", 4);
+		strength.applyBonus("Base", 14);
+		strength.applyBonus("Morale", 4);
 		assertEquals(18, strength.getValue());
 	}
 
 	@Test
 	void basicTest2() {
 		Bonus strength = new Bonus();
-		strength.addBonus("Base", 14);
-		strength.addBonus("Morale", 4);
-		strength.addBonus("Alchemical", 4);
+		strength.applyBonus("Base", 14);
+		strength.applyBonus("Morale", 4);
+		strength.applyBonus("Alchemical", 4);
 		assertEquals(22, strength.getValue());
 	}
 	
@@ -33,7 +33,7 @@ class BonusTest {
 	void basicTest3() {
 		Bonus counter = new Bonus();
 		for (int i = 0; i < 50000; i++) {
-			counter.addBonus(String.valueOf(i), 1);
+			counter.applyBonus(String.valueOf(i), 1);
 		}
 		assertEquals(50000, counter.getValue());
 	}
@@ -41,7 +41,7 @@ class BonusTest {
 	@Test
 	void penaltyTest1() {
 		Bonus strength = new Bonus();
-		strength.addBonus("Base", 25);
+		strength.applyBonus("Base", 25);
 		strength.addPenalty(-2);
 		assertEquals(23, strength.getValue());
 	}

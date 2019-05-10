@@ -8,22 +8,32 @@ public class Bonus {
 	private LinkedList<Integer> circumstance;
 	private LinkedList<Integer> dodge;
 	private LinkedList<Integer> penalties;
-	
-	public Bonus() {}
-	
+
+	public Bonus() {
+	}
+
 	public Bonus(Integer base) {
-		addBonus("Base", base);
+		applyBonus("Base", base);
 	}
 
 	/**
-	 * Creates a bonus of the specified type of the amount listed. If "Circumstance"
-	 * or "Dodge" is placed in the type field, the values are placed in a special
-	 * stacking field, otherwise bonuses of the same type do not stack.
+	 * Creates a bonus of the specified type of the amount listed so long as a bonus
+	 * of equal or higher value doesn't already exist. If "Circumstance" or "Dodge"
+	 * is placed in the type field, the values are placed in a special stacking
+	 * field, otherwise bonuses of the same type do not stack.
 	 * 
 	 * @param type   - The name of the bonus, starting with a capital letter
 	 * @param amount - An integer amount specifying the bonus.
 	 */
-	public void addBonus(String type, Integer amount) {
+	public void applyBonus(String type, int amount) {
+		placeBonus(type, amount, false);
+	}
+
+	public void setBonus(String type, int amount) {
+		placeBonus(type, amount, true);
+	}
+
+	private void placeBonus(String type, int amount, boolean forcePlacement) {
 		if (type.equals("Circumstance")) {
 			return;
 		}
@@ -32,11 +42,11 @@ public class Bonus {
 		}
 		ensureMapExists();
 		Integer previous = nonStackingBonuses.put(type, amount);
-		if (previous == null)
+		if (previous == null || !forcePlacement)
 			return;
 		nonStackingBonuses.put(type, Math.max(amount, previous));
 	}
-	
+
 	public void addPenalty(Integer amount) {
 		if (penalties == null)
 			penalties = new LinkedList<Integer>();
@@ -55,7 +65,7 @@ public class Bonus {
 			for (Integer i : dodge)
 				total += i;
 		if (penalties != null)
-			for (Integer i: penalties)
+			for (Integer i : penalties)
 				total += i;
 		return total;
 	}
@@ -73,8 +83,12 @@ public class Bonus {
 		if (nonStackingBonuses == null)
 			nonStackingBonuses = new HashMap<String, Integer>();
 	}
-	
+
 	public String toString() {
 		return String.valueOf(getValue());
+	}
+
+	public void setBase(int val) {
+		setBonus("Base", val);
 	}
 }
