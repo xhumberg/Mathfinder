@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Bonus {
+	private LinkedList<Integer> stats;
 	private HashMap<String, Integer> nonStackingBonuses;
 	private LinkedList<Integer> circumstance;
 	private LinkedList<Integer> dodge;
@@ -35,9 +36,11 @@ public class Bonus {
 
 	private void placeBonus(String type, int amount, boolean forcePlacement) {
 		if (type.equals("Circumstance")) {
+			//TODO: place Circumstance
 			return;
 		}
 		if (type.contentEquals("Dodge")) {
+			//TODO: place Dodge
 			return;
 		}
 		ensureMapExists();
@@ -77,6 +80,7 @@ public class Bonus {
 		nonStackingBonuses = null;
 		circumstance = null;
 		dodge = null;
+		penalties = null;
 	}
 
 	private void ensureMapExists() {

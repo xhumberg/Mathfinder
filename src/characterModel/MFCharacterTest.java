@@ -32,7 +32,7 @@ class MFCharacterTest {
 		//Give feats
 //		Raider.loadFeat("PowerAttack.feat");
 //		Raider.loadFeat("WeaponFocus.feat");
-//		Raider.specifyFeat("WeaponFocus", "Battleaxe");
+//		Raider.specifyFeat("Weapon Focus", "Battleaxe");
 		
 		//Give skill ranks
 //		Raider.giveRanks("Intimidate", 1);
