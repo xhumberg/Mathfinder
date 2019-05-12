@@ -27,7 +27,7 @@ class MFCharacterTest {
 		Raider.cha.setBase(8);
 		
 		//Apply class
-//		Raider.loadClass("Barbarian1.class");
+		Raider.loadClass("Barbarian1.class");
 		
 		//Give feats
 //		Raider.loadFeat("PowerAttack.feat");

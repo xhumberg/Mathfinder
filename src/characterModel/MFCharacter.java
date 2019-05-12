@@ -1,5 +1,14 @@
 package characterModel;
 
+import java.io.File;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
 public class MFCharacter {
 	String name;
 	String race;
@@ -45,7 +54,7 @@ public class MFCharacter {
 		name = "Dave";
 		race = "Human";
 		pfclass = "Barbarian";
-		level = 1;
+		level = 0;
 		alignment = "N";
 		size = "Medium";
 		type = "Humanoid (Human)";
@@ -67,9 +76,9 @@ public class MFCharacter {
 		pfint = new Bonus();
 		wis = new Bonus();
 		cha = new Bonus();
-		BAB = 1;
+		BAB = 0;
 		CMB = new Bonus();
-		CMD = new Bonus();
+		CMD = new Bonus(10);
 		//Feats
 		//Skills
 		//Languages
@@ -173,6 +182,65 @@ public class MFCharacter {
 		return sheet.toString();
 	}
 
+	public void loadClass(String filename) {
+		try {
+			File XMLFile = new File(filename);
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document classXML = dBuilder.parse(XMLFile);
+			Node root = classXML.getDocumentElement();
+			
+			classXML.getDocumentElement().normalize();
+			
+			if (root.getNodeName() != "class")
+				throw new Exception("File isn't a class");
+			
+			String className = ((Element)root).getAttribute("name");
+			
+			/*
+			 * Base level allows parsing of:
+			 *  - HD
+			 *  - Skills
+			 *  - Proficiencies
+			 *  - BAB
+			 *  - Fort
+			 *  - Ref
+			 *  - Will
+			 *  - SQ
+			 *  - SAttack
+			 *  - And more later
+			 */
+			
+			//Add specified hit dice
+			//Add classSkills first
+			//add Skills per level here. This will allow us to put ranks in.
+			//read all proficiencies.
+			this.BAB = Integer.parseInt(getNodeText(root, "BAB"));
+			this.fort.applyBonus(className, Integer.parseInt(getNodeText(root, "Fort")));
+			this.ref.applyBonus(className, Integer.parseInt(getNodeText(root, "Ref")));
+			this.will.applyBonus(className, Integer.parseInt(getNodeText(root, "Will")));
+			//Add special qualities
+			//Apply special quality bonuses
+			//Add special quality effects
+			//Add SAttacks
+			//Add SAttack bonuses
+			//Add SAttack effects
+			//Add SDefense
+			//Add SDefense bonuses
+			//Add SDefense effects
+			
+			level++;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private String getNodeText(Node parent, String tagName) {
+		Element element= (Element) parent;
+		
+		return element.getElementsByTagName(tagName).item(0).getTextContent();
+	}
 	//XML Parsers
 	
 
