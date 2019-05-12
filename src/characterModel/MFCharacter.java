@@ -83,6 +83,7 @@ public class MFCharacter {
 	Bonus CMD;
 	// Feats
 	Skill skills[];
+	Bonus ACP;
 	// Languages
 	// SQ
 	// Combat Gear
@@ -123,10 +124,49 @@ public class MFCharacter {
 		CMD = new Bonus(10);
 		// Feats
 		skills = new Skill[38];
-		for(int i = 0; i < 38; i++)
-		{
-			skills[i] = new Skill();
-		}
+		ACP = new Bonus();
+		//ACP.setBase(num);
+		
+		skills[skillType.ACROBATICS.ordinal()] = new Skill(dex, ACP);
+		skills[skillType.APPRAISE.ordinal()] = new Skill(pfint);
+		skills[skillType.BLUFF.ordinal()] = new Skill(cha);
+		skills[skillType.CLIMB.ordinal()] = new Skill(str, ACP);
+		skills[skillType.CRAFT_A.ordinal()] = new Skill(pfint);
+		skills[skillType.CRAFT_B.ordinal()] = new Skill(pfint);
+		skills[skillType.DIPLOMACY.ordinal()] = new Skill(cha);
+		skills[skillType.DISABLE_DEVICE.ordinal()] = new Skill(dex, ACP);
+		skills[skillType.DISGUISE.ordinal()] = new Skill(cha);
+		skills[skillType.ESCAPE_ARTIST.ordinal()] = new Skill(dex, ACP);
+		skills[skillType.FLY.ordinal()] = new Skill(dex, ACP);
+		skills[skillType.HANDLE_ANIMAL.ordinal()] = new Skill(cha);
+		skills[skillType.HEAL.ordinal()] = new Skill(wis);
+		skills[skillType.INTIMIDATE.ordinal()] = new Skill(cha);
+		skills[skillType.KNOWLEDGE_ARCANA.ordinal()] = new Skill(pfint);
+		skills[skillType.KNOWLEDGE_DUNGEONEERING.ordinal()] = new Skill(pfint);
+		skills[skillType.KNOWLEDGE_ENGINEERING.ordinal()] = new Skill(pfint);
+		skills[skillType.KNOWLEDGE_GEOGRAPHY.ordinal()] = new Skill(pfint);
+		skills[skillType.KNOWLEDGE_HISTORY.ordinal()] = new Skill(pfint);
+		skills[skillType.KNOWLEDGE_LOCAL.ordinal()] = new Skill(pfint);
+		skills[skillType.KNOWLEDGE_NATURE.ordinal()] = new Skill(pfint);
+		skills[skillType.KNOWLEDGE_NOBILITY.ordinal()] = new Skill(pfint);
+		skills[skillType.KNOWLEDGE_PLANES.ordinal()] = new Skill(pfint);
+		skills[skillType.KNOWLEDGE_RELIGION.ordinal()] = new Skill(pfint);
+		skills[skillType.LINGUISTICS.ordinal()] = new Skill(pfint);
+		skills[skillType.PERCEPTION.ordinal()] = new Skill(wis);
+		skills[skillType.PERFORM_A.ordinal()] = new Skill(cha);
+		skills[skillType.PERFORM_B.ordinal()] = new Skill(cha);
+		skills[skillType.PROFESSION_A.ordinal()] = new Skill(wis);
+		skills[skillType.PROFESSION_B.ordinal()] = new Skill(wis);
+		skills[skillType.RIDE.ordinal()] = new Skill(dex, ACP);
+		skills[skillType.SENSE_MOTIVE.ordinal()] = new Skill(wis);
+		skills[skillType.SLEIGHT_OF_HAND.ordinal()] = new Skill(dex, ACP);
+		skills[skillType.SPELLCRAFT.ordinal()] = new Skill(pfint);
+		skills[skillType.STEALTH.ordinal()] = new Skill(dex, ACP);
+		skills[skillType.SURVIVAL.ordinal()] = new Skill(wis);
+		skills[skillType.SWIM.ordinal()] = new Skill(str, ACP);
+		skills[skillType.USE_MAGIC_DEVICE.ordinal()] = new Skill(cha);
+			
+		
 		// Languages
 		// SQ
 		// Combat Gear
