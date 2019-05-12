@@ -270,9 +270,9 @@ public class MFCharacter {
 			// add Skills per level here. This will allow us to put ranks in.
 			// read all proficiencies.
 			this.BAB = Integer.parseInt(getNodeText(root, "BAB"));
-			this.fort.applyBonus(className, Integer.parseInt(getNodeText(root, "Fort")));
-			this.ref.applyBonus(className, Integer.parseInt(getNodeText(root, "Ref")));
-			this.will.applyBonus(className, Integer.parseInt(getNodeText(root, "Will")));
+			this.fort.applyBonus(className, className, Integer.parseInt(getNodeText(root, "Fort")));
+			this.ref.applyBonus(className, className, Integer.parseInt(getNodeText(root, "Ref")));
+			this.will.applyBonus(className, className, Integer.parseInt(getNodeText(root, "Will")));
 			// Add special qualities
 			// Apply special quality bonuses
 			// Add special quality effects
