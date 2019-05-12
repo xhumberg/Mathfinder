@@ -35,11 +35,10 @@ class MFCharacterTest {
 //		Raider.specifyFeat("Weapon Focus", "Battleaxe");
 		
 		//Give skill ranks
-//		Raider.giveRanks("Intimidate", 1);
-//		Raider.giveRanks("Perception", 1);
-//		Raider.giveRanks("Profession (Sailor)", 1);
-//		Raider.giveRanks("Survival", 1);
-//		Raider.giveRanks("Swim", 1);
+		Raider.giveRanks("Intimidate", 1);
+		Raider.giveRanks("Perception", 1);
+		Raider.giveRanks("Profession A", 1);
+		Raider.giveRanks("Survival", 1);
 		
 		//Set languages
 //		Raider.giveLanguage("Common");
@@ -56,5 +55,19 @@ class MFCharacterTest {
 		
 		String block = Raider.getStatBlock();
 		System.out.println(block);
+	}
+	
+	@Test
+	void testSkills()
+	{
+		MFCharacter Skillbob = new MFCharacter("Skillbob");
+		
+		assertEquals(Skillbob.getRanks("Perform A"), 0);
+		
+		Skillbob.giveRanks("Climb", 2);
+		assertEquals(Skillbob.getRanks("Climb"), 2);
+		
+		Skillbob.giveRanks("Climb", 1);
+		assertEquals(Skillbob.getRanks("Climb"), 3);
 	}
 }

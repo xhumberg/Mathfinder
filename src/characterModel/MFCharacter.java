@@ -9,6 +9,48 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+enum skillType
+{
+	ACROBATICS,
+	APPRAISE,
+	BLUFF,
+	CLIMB,
+	CRAFT_A,
+	CRAFT_B,
+	DIPLOMACY,
+	DISABLE_DEVICE,
+	DISGUISE,
+	ESCAPE_ARTIST,
+	FLY,
+	HANDLE_ANIMAL,
+	HEAL,
+	INTIMIDATE,
+	KNOWLEDGE_ARCANA,
+	KNOWLEDGE_DUNGEONEERING,
+	KNOWLEDGE_ENGINEERING,
+	KNOWLEDGE_GEOGRAPHY,
+	KNOWLEDGE_HISTORY,
+	KNOWLEDGE_LOCAL,
+	KNOWLEDGE_NATURE,
+	KNOWLEDGE_NOBILITY,
+	KNOWLEDGE_PLANES,
+	KNOWLEDGE_RELIGION,
+	LINGUISTICS,
+	PERCEPTION,
+	PERFORM_A,
+	PERFORM_B,
+	PROFESSION_A,
+	PROFESSION_B,
+	RIDE,
+	SENSE_MOTIVE,
+	SLEIGHT_OF_HAND,
+	SPELLCRAFT,
+	STEALTH,
+	SURVIVAL,
+	SWIM,
+	USE_MAGIC_DEVICE
+}
+
 public class MFCharacter {
 	String name;
 	String race;
@@ -40,10 +82,7 @@ public class MFCharacter {
 	Bonus CMB;
 	Bonus CMD;
 	// Feats
-	// Skills
-	
-	// Array of skills, each of which has a name, a bonus, and two booleans for untrained and armor check.
-	
+	Skill skills[];
 	// Languages
 	// SQ
 	// Combat Gear
@@ -83,7 +122,11 @@ public class MFCharacter {
 		CMB = new Bonus();
 		CMD = new Bonus(10);
 		// Feats
-		// Skills
+		skills = new Skill[38];
+		for(int i = 0; i < 38; i++)
+		{
+			skills[i] = new Skill();
+		}
 		// Languages
 		// SQ
 		// Combat Gear
@@ -109,6 +152,18 @@ public class MFCharacter {
 	public MFCharacter(String name) {
 		this();
 		this.name = name;
+	}
+	
+	public void giveRanks(String skillName, int ranks)
+	{
+		skillType st = skillType.valueOf(skillName.toUpperCase().replace(' ', '_'));
+		skills[st.ordinal()].addRanks(ranks);
+	}
+	
+	public int getRanks(String skillName)
+	{
+		skillType st = skillType.valueOf(skillName.toUpperCase().replace(' ', '_'));
+		return skills[st.ordinal()].getRanks();
 	}
 
 	/**
