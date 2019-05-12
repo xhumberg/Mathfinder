@@ -41,6 +41,9 @@ public class MFCharacter {
 	Bonus CMD;
 	// Feats
 	// Skills
+	
+	// Array of skills, each of which has a name, a bonus, and two booleans for untrained and armor check.
+	
 	// Languages
 	// SQ
 	// Combat Gear
