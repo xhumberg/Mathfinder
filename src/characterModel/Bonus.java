@@ -4,17 +4,17 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Bonus {
-	private LinkedList<Integer> stats;
-	private HashMap<String, Integer> nonStackingBonuses;
-	private LinkedList<Integer> circumstance;
-	private LinkedList<Integer> dodge;
-	private LinkedList<Integer> penalties;
+	private LinkedList<Bonus> stats;
+	private HashMap<String, BonusEffect> nonStackingBonuses;
+	private BonusEffect circumstance;
+	private BonusEffect dodge;
+	private BonusEffect penalties;
 
 	public Bonus() {
 	}
 
 	public Bonus(Integer base) {
-		applyBonus("Base", base);
+		applyBonus("Base", "Base", base);
 	}
 
 	/**
@@ -26,51 +26,68 @@ public class Bonus {
 	 * @param type   - The name of the bonus, starting with a capital letter
 	 * @param amount - An integer amount specifying the bonus.
 	 */
-	public void applyBonus(String type, int amount) {
-		placeBonus(type, amount, false);
+	public void applyBonus(String source, String type, int amount) {
+		placeBonus(source, type, amount, false);
 	}
 
-	public void setBonus(String type, int amount) {
-		placeBonus(type, amount, true);
+	public void setBonus(String source, String type, int amount) {
+		placeBonus(source, type, amount, true);
 	}
 
-	private void placeBonus(String type, int amount, boolean forcePlacement) {
+	private void placeBonus(String source, String type, int amount, boolean forcePlacement) {
 		if (type.equals("Circumstance")) {
-			//TODO: place Circumstance
+			// TODO: place Circumstance
 			return;
 		}
-		if (type.contentEquals("Dodge")) {
-			//TODO: place Dodge
+		if (type.equals("Dodge")) {
+			// TODO: place Dodge
 			return;
 		}
+
 		ensureMapExists();
-		Integer previous = nonStackingBonuses.put(type, amount);
-		if (previous == null || !forcePlacement)
-			return;
-		nonStackingBonuses.put(type, Math.max(amount, previous));
+
+		BonusEffect effect = nonStackingBonuses.get(type);
+
+		// Ensure the effect exists
+		if (effect == null) {
+			effect = new BonusEffect(false);
+			nonStackingBonuses.put(type, effect);
+		}
+
+		effect.addEffect(source, amount);
 	}
 
-	public void addPenalty(Integer amount) {
+	public void addStat(Bonus stat) {
+		if (stats == null)
+			stats = new LinkedList<Bonus>();
+		stats.add(stat);
+	}
+
+	public void addPenalty(String source, Integer amount) {
 		if (penalties == null)
-			penalties = new LinkedList<Integer>();
-		penalties.push(amount);
+			penalties = new BonusEffect(true);
+		penalties.addEffect(source, amount);
 	}
 
 	public int getValue() {
 		int total = 0;
+		if (stats != null)
+			for (Bonus stat : stats)
+				total += stat.getMod();
 		if (nonStackingBonuses != null)
-			for (Integer i : nonStackingBonuses.values())
-				total += i;
+			for (BonusEffect e : nonStackingBonuses.values())
+				total += e.getValue();
 		if (circumstance != null)
-			for (Integer i : circumstance)
-				total += i;
+			total += circumstance.getValue();
 		if (dodge != null)
-			for (Integer i : dodge)
-				total += i;
+			total += dodge.getValue();
 		if (penalties != null)
-			for (Integer i : penalties)
-				total += i;
+			total += penalties.getValue();
 		return total;
+	}
+
+	public int getMod() {
+		return (int) Math.floor((getValue() - 10) / 2);
 	}
 
 	/**
@@ -85,7 +102,7 @@ public class Bonus {
 
 	private void ensureMapExists() {
 		if (nonStackingBonuses == null)
-			nonStackingBonuses = new HashMap<String, Integer>();
+			nonStackingBonuses = new HashMap<String, BonusEffect>();
 	}
 
 	public String toString() {
@@ -93,6 +110,6 @@ public class Bonus {
 	}
 
 	public void setBase(int val) {
-		setBonus("Base", val);
+		setBonus("Base", "Base", val);
 	}
 }
