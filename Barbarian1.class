@@ -39,6 +39,22 @@
 				<type>Morale</type>
 				<value>4</value>
 			</bonus>
+			<bonus to="Will">
+				<type>Morale</type>
+				<value>2</value>
+			</bonus>
+			<penalty to="AC">
+				<value>2</value>
+			</penalty>
+			<penalty to="Touch">
+				<value>2</value>
+			</penalty>
+			<penalty to="FFAC">
+				<value>2</value>
+			</penalty>
+			<perDay>
+				<stat>Con</stat>
+				<value>4</value>
 		</effect>
 	</Sattack>
 </class>
