@@ -8,6 +8,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 enum skillType
 {
@@ -314,22 +315,53 @@ public class MFCharacter {
 
 			hp.addHD(DiceType.valueOf(getNodeText(root, "HD")));
 			
-			// Add classSkills first
-			// add Skills per level here. This will allow us to put ranks in.
-			// read all proficiencies.
+			Node skills = getNode(root, "Skills");
+			
+			//Get number of skills per level.
+			
+			//Get class skills
+			NodeList skillList = getNodeList(skills, "classSkill");
+			
+			for (int i = 0; i < skillList.getLength(); i++) {
+//				setClassSkill(skillList.item(i).getTextContent());
+			}
+			
+			NodeList proficienciesList = getNodeList(root, "Proficient");
+			
+			for (int i = 0; i < proficienciesList.getLength(); i++) {
+				String proficiency = proficienciesList.item(i).getTextContent();
+				proficiency = proficiency.replace(" ", "_").toUpperCase();
+//				addProficiency(proficiency);
+			}
+			
 			this.BAB = Integer.parseInt(getNodeText(root, "BAB"));
 			this.fort.applyBonus(className, className, Integer.parseInt(getNodeText(root, "Fort")));
 			this.ref.applyBonus(className, className, Integer.parseInt(getNodeText(root, "Ref")));
 			this.will.applyBonus(className, className, Integer.parseInt(getNodeText(root, "Will")));
-			// Add special qualities
-			// Apply special quality bonuses
-			// Add special quality effects
-			// Add SAttacks
-			// Add SAttack bonuses
-			// Add SAttack effects
-			// Add SDefense
-			// Add SDefense bonuses
-			// Add SDefense effects
+			
+			NodeList SQList = getNodeList(root, "SQ");
+			for (int i = 0; i < SQList.getLength(); i++) {
+				Node SQ = SQList.item(i);
+				//SQ have a name
+				//SQ have a description
+				//SQ CAN have bonuses and/or effects
+			}
+			
+			NodeList SAttackList = getNodeList(root, "SAttack");
+			for (int i = 0; i < SAttackList.getLength(); i++) {
+				Node SAttack = SAttackList.item(i);
+				//SQ have a name
+				//SQ have a description
+				//SQ CAN have bonuses and/or effects
+			}
+			
+			NodeList SDefenseList = getNodeList(root, "SDefense");
+			for (int i = 0; i < SDefenseList.getLength(); i++) {
+				Node SDefense = SDefenseList.item(i);
+				//SQ have a name
+				//SQ have a description
+				//SQ CAN have bonuses and/or effects
+			}
 
 			level++;
 
@@ -337,11 +369,19 @@ public class MFCharacter {
 			e.printStackTrace();
 		}
 	}
-
-	private String getNodeText(Node parent, String tagName) {
+	
+	private NodeList getNodeList(Node parent, String tagName) {
 		Element element = (Element) parent;
 
-		return element.getElementsByTagName(tagName).item(0).getTextContent();
+		return element.getElementsByTagName(tagName);
+	}
+	
+	private Node getNode(Node parent, String tagName) {
+		return getNodeList(parent,tagName).item(0);
+	}
+
+	private String getNodeText(Node parent, String tagName) {
+		return getNode(parent, tagName).getTextContent();
 	}
 	// XML Parsers
 
