@@ -52,16 +52,16 @@ public class HP {
 			lethalDamage += amount;
 
 	}
-	
+
 	public void heal(int amount) {
-		nonlethalDamage = Math.max(0, nonlethalDamage-amount);
-		lethalDamage = Math.max(0,  lethalDamage-amount);
+		nonlethalDamage = Math.max(0, nonlethalDamage - amount);
+		lethalDamage = Math.max(0, lethalDamage - amount);
 	}
-	
+
 	public int getCurrentHP() {
 		return getMaxHP() - lethalDamage;
 	}
-	
+
 	public int getEffectiveHP() {
 		return getMaxHP() - lethalDamage - nonlethalDamage;
 	}

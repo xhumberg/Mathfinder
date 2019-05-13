@@ -32,7 +32,7 @@ public class BonusEffect {
 	private boolean sourceExists(String source) {
 		return (getSource(source) != null);
 	}
-	
+
 	private BonusTuple getSource(String source) {
 		for (BonusTuple t : effects) {
 			if (t.source.contentEquals(source))

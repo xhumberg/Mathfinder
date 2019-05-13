@@ -10,46 +10,12 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-enum skillType
-{
-	ACROBATICS,
-	APPRAISE,
-	BLUFF,
-	CLIMB,
-	CRAFT_A,
-	CRAFT_B,
-	DIPLOMACY,
-	DISABLE_DEVICE,
-	DISGUISE,
-	ESCAPE_ARTIST,
-	FLY,
-	HANDLE_ANIMAL,
-	HEAL,
-	INTIMIDATE,
-	KNOWLEDGE_ARCANA,
-	KNOWLEDGE_DUNGEONEERING,
-	KNOWLEDGE_ENGINEERING,
-	KNOWLEDGE_GEOGRAPHY,
-	KNOWLEDGE_HISTORY,
-	KNOWLEDGE_LOCAL,
-	KNOWLEDGE_NATURE,
-	KNOWLEDGE_NOBILITY,
-	KNOWLEDGE_PLANES,
-	KNOWLEDGE_RELIGION,
-	LINGUISTICS,
-	PERCEPTION,
-	PERFORM_A,
-	PERFORM_B,
-	PROFESSION_A,
-	PROFESSION_B,
-	RIDE,
-	SENSE_MOTIVE,
-	SLEIGHT_OF_HAND,
-	SPELLCRAFT,
-	STEALTH,
-	SURVIVAL,
-	SWIM,
-	USE_MAGIC_DEVICE
+enum skillType {
+	ACROBATICS, APPRAISE, BLUFF, CLIMB, CRAFT_A, CRAFT_B, DIPLOMACY, DISABLE_DEVICE, DISGUISE, ESCAPE_ARTIST, FLY,
+	HANDLE_ANIMAL, HEAL, INTIMIDATE, KNOWLEDGE_ARCANA, KNOWLEDGE_DUNGEONEERING, KNOWLEDGE_ENGINEERING,
+	KNOWLEDGE_GEOGRAPHY, KNOWLEDGE_HISTORY, KNOWLEDGE_LOCAL, KNOWLEDGE_NATURE, KNOWLEDGE_NOBILITY, KNOWLEDGE_PLANES,
+	KNOWLEDGE_RELIGION, LINGUISTICS, PERCEPTION, PERFORM_A, PERFORM_B, PROFESSION_A, PROFESSION_B, RIDE, SENSE_MOTIVE,
+	SLEIGHT_OF_HAND, SPELLCRAFT, STEALTH, SURVIVAL, SWIM, USE_MAGIC_DEVICE
 }
 
 public class MFCharacter {
@@ -133,8 +99,8 @@ public class MFCharacter {
 		// Feats
 		skills = new Skill[38];
 		ACP = new Bonus();
-		//ACP.setBase(num);
-		
+		// ACP.setBase(num);
+
 		skills[skillType.ACROBATICS.ordinal()] = new Skill(dex, ACP);
 		skills[skillType.APPRAISE.ordinal()] = new Skill(pfint);
 		skills[skillType.BLUFF.ordinal()] = new Skill(cha);
@@ -173,8 +139,7 @@ public class MFCharacter {
 		skills[skillType.SURVIVAL.ordinal()] = new Skill(wis);
 		skills[skillType.SWIM.ordinal()] = new Skill(str, ACP);
 		skills[skillType.USE_MAGIC_DEVICE.ordinal()] = new Skill(cha);
-			
-		
+
 		// Languages
 		// SQ
 		// Combat Gear
@@ -201,15 +166,13 @@ public class MFCharacter {
 		this();
 		this.name = name;
 	}
-	
-	public void giveRanks(String skillName, int ranks)
-	{
+
+	public void giveRanks(String skillName, int ranks) {
 		skillType st = skillType.valueOf(skillName.toUpperCase().replace(' ', '_'));
 		skills[st.ordinal()].addRanks(ranks);
 	}
-	
-	public int getRanks(String skillName)
-	{
+
+	public int getRanks(String skillName) {
 		skillType st = skillType.valueOf(skillName.toUpperCase().replace(' ', '_'));
 		return skills[st.ordinal()].getRanks();
 	}
@@ -310,57 +273,57 @@ public class MFCharacter {
 
 			/*
 			 * Base level allows parsing of: - HD - Skills - Proficiencies - BAB - Fort -
-			 * Ref - Will - SQ - SAttack - And more later
+			 * Ref - Will - SQ - SAttack - SDefense
 			 */
 
 			hp.addHD(DiceType.valueOf(getNodeText(root, "HD")));
-			
+
 			Node skills = getNode(root, "Skills");
-			
-			//Get number of skills per level.
-			
-			//Get class skills
+
+			// Get number of skills per level.
+
+			// Get class skills
 			NodeList skillList = getNodeList(skills, "classSkill");
-			
+
 			for (int i = 0; i < skillList.getLength(); i++) {
 //				setClassSkill(skillList.item(i).getTextContent());
 			}
-			
+
 			NodeList proficienciesList = getNodeList(root, "Proficient");
-			
+
 			for (int i = 0; i < proficienciesList.getLength(); i++) {
 				String proficiency = proficienciesList.item(i).getTextContent();
 				proficiency = proficiency.replace(" ", "_").toUpperCase();
 //				addProficiency(proficiency);
 			}
-			
+
 			this.BAB = Integer.parseInt(getNodeText(root, "BAB"));
 			this.fort.applyBonus(className, className, Integer.parseInt(getNodeText(root, "Fort")));
 			this.ref.applyBonus(className, className, Integer.parseInt(getNodeText(root, "Ref")));
 			this.will.applyBonus(className, className, Integer.parseInt(getNodeText(root, "Will")));
-			
+
 			NodeList SQList = getNodeList(root, "SQ");
 			for (int i = 0; i < SQList.getLength(); i++) {
 				Node SQ = SQList.item(i);
-				//SQ have a name
-				//SQ have a description
-				//SQ CAN have bonuses and/or effects
+				// SQ have a name
+				// SQ have a description
+				// SQ CAN have bonuses and/or effects
 			}
-			
+
 			NodeList SAttackList = getNodeList(root, "SAttack");
 			for (int i = 0; i < SAttackList.getLength(); i++) {
 				Node SAttack = SAttackList.item(i);
-				//SQ have a name
-				//SQ have a description
-				//SQ CAN have bonuses and/or effects
+				// SQ have a name
+				// SQ have a description
+				// SQ CAN have bonuses and/or effects
 			}
-			
+
 			NodeList SDefenseList = getNodeList(root, "SDefense");
 			for (int i = 0; i < SDefenseList.getLength(); i++) {
 				Node SDefense = SDefenseList.item(i);
-				//SQ have a name
-				//SQ have a description
-				//SQ CAN have bonuses and/or effects
+				// SQ have a name
+				// SQ have a description
+				// SQ CAN have bonuses and/or effects
 			}
 
 			level++;
@@ -369,15 +332,15 @@ public class MFCharacter {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private NodeList getNodeList(Node parent, String tagName) {
 		Element element = (Element) parent;
 
 		return element.getElementsByTagName(tagName);
 	}
-	
+
 	private Node getNode(Node parent, String tagName) {
-		return getNodeList(parent,tagName).item(0);
+		return getNodeList(parent, tagName).item(0);
 	}
 
 	private String getNodeText(Node parent, String tagName) {
@@ -400,7 +363,7 @@ public class MFCharacter {
 	public void damage(int amount) {
 		hp.damage(amount);
 	}
-	
+
 	public void heal(int amount) {
 		hp.heal(amount);
 	}
@@ -414,7 +377,7 @@ public class MFCharacter {
 	}
 
 	public void damage(int amount, boolean nonlethal) {
-		hp.damage(amount,nonlethal);
+		hp.damage(amount, nonlethal);
 	}
 
 }
