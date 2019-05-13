@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0"?>
 <class name="Barbarian 1">
-	<HD>d12</HD>
+	<HD>D12</HD>
 	<Skills perLevel="4">
 		<classSkill>Acrobatics</classSkill>
 		<classSkill>Climb</classSkill>

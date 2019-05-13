@@ -13,7 +13,7 @@ public class Skill {
 		myBonus.addStat(stat);
 		ranks = 0;
 		//untrained = false;
-		armorCheck = null;
+		armorCheck = new Bonus();
 		classSkill = false;
 	}
 	

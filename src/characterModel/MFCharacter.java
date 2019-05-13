@@ -63,7 +63,7 @@ public class MFCharacter {
 	Bonus AC;
 	Bonus TouchAC;
 	Bonus FFAC;
-	// HP
+	HP hp;
 	Bonus fort;
 	Bonus ref;
 	Bonus will;
@@ -105,7 +105,7 @@ public class MFCharacter {
 		AC = new Bonus(10);
 		TouchAC = new Bonus(10);
 		FFAC = new Bonus(10);
-		// HP
+		// HP must be initialized after con.
 		fort = new Bonus();
 		ref = new Bonus();
 		will = new Bonus();
@@ -119,6 +119,13 @@ public class MFCharacter {
 		pfint = new Bonus();
 		wis = new Bonus();
 		cha = new Bonus();
+		fort.addStat(con);
+		ref.addStat(dex);
+		will.addStat(wis);
+		AC.addStat(dex);
+		TouchAC.addStat(dex);
+		init.addStat(dex);
+		hp = new HP(con);
 		BAB = 0;
 		CMB = new Bonus();
 		CMD = new Bonus(10);
@@ -230,7 +237,7 @@ public class MFCharacter {
 		sheet.append("\nInit ");
 		sheet.append(init);
 		sheet.append("; Senses: Perception ");
-		// Perception
+		sheet.append(skills[skillType.PERCEPTION.ordinal()].getValue());
 		sheet.append("\n----------\nDefense\n----------\nAC ");
 		sheet.append(AC);
 		sheet.append(", touch ");
@@ -239,7 +246,7 @@ public class MFCharacter {
 		sheet.append(FFAC);
 		// Specify types of armor bonus
 		sheet.append("\nhp ");
-		// HP
+		sheet.append(getEffectiveHP() + "/" + getMaxHP());
 		// Hit dice specs
 		sheet.append("\nFort ");
 		sheet.append(fort);
@@ -305,7 +312,8 @@ public class MFCharacter {
 			 * Ref - Will - SQ - SAttack - And more later
 			 */
 
-			// Add specified hit dice
+			hp.addHD(DiceType.valueOf(getNodeText(root, "HD")));
+			
 			// Add classSkills first
 			// add Skills per level here. This will allow us to put ranks in.
 			// read all proficiencies.
@@ -336,5 +344,37 @@ public class MFCharacter {
 		return element.getElementsByTagName(tagName).item(0).getTextContent();
 	}
 	// XML Parsers
+
+	public void addHD(DiceType type) {
+		hp.addHD(type);
+	}
+
+	public Integer getMaxHP() {
+		return hp.getMaxHP();
+	}
+
+	public void favoredClassHP(int amount) {
+		hp.favoredClassBonus = amount;
+	}
+
+	public void damage(int amount) {
+		hp.damage(amount);
+	}
+	
+	public void heal(int amount) {
+		hp.heal(amount);
+	}
+
+	public int getCurrentHP() {
+		return hp.getCurrentHP();
+	}
+
+	public int getEffectiveHP() {
+		return hp.getEffectiveHP();
+	}
+
+	public void damage(int amount, boolean nonlethal) {
+		hp.damage(amount,nonlethal);
+	}
 
 }
