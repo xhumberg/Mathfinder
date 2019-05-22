@@ -41,8 +41,8 @@ class MFCharacterTest {
 		Raider.giveRanks("Survival", 1);
 
 		// Set languages
-//		Raider.giveLanguage("Common");
-//		Raider.giveLanguage("+1 Additional");
+		Raider.giveLanguage("Common");
+		Raider.giveLanguage("+1 Additional");
 
 		// Give gear
 //		Raider.loadGear("Chainmail.armor");

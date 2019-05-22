@@ -1,6 +1,8 @@
 package characterModel;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -51,7 +53,7 @@ public class MFCharacter {
 	// Feats
 	Skill skills[];
 	Bonus ACP;
-	// Languages
+	List<String> languages;
 	// SQ
 	// Combat Gear
 	// Other Gear
@@ -145,7 +147,7 @@ public class MFCharacter {
 		skills[skillType.SWIM.ordinal()] = new Skill(str, ACP);
 		skills[skillType.USE_MAGIC_DEVICE.ordinal()] = new Skill(cha);
 
-		// Languages
+		languages = new LinkedList<String>();
 		// SQ
 		// Combat Gear
 		// Other Gear
@@ -251,7 +253,8 @@ public class MFCharacter {
 		sheet.append(CMD);
 		// Feats
 		// Skills
-		// Languages
+		sheet.append("\nLanguages: ");
+		sheet.append(languages.toString().replace("[", "").replace("]", ""));
 		// SQ
 		// Combat Gear
 		// Other Gear
@@ -383,6 +386,11 @@ public class MFCharacter {
 
 	public void damage(int amount, boolean nonlethal) {
 		hp.damage(amount, nonlethal);
+	}
+
+	public void giveLanguage(String language) {
+		if (language != null)
+			languages.add(language);
 	}
 
 }
