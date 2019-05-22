@@ -55,4 +55,27 @@ public class BonusEffect {
 		String source;
 		Integer value;
 	}
+
+	public boolean removeSource(String source) {
+		int foundIndex = -1;
+		for (int i = 0; i < effects.size(); i++) {
+			if (effects.get(i).source.equals(source)) {
+				foundIndex = i;
+				break;
+			}
+		}
+		if (foundIndex >= 0) {
+			effects.remove(foundIndex);
+			
+			//Ensure no more effects from this source exist
+			removeSource(source);
+			
+			return true;
+		}
+		return false;
+	}
+	
+	public String toString() {
+		return String.valueOf(getValue());
+	}
 }
