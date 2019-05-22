@@ -45,7 +45,7 @@ public class MFCharacter {
 	Bonus pfint;
 	Bonus wis;
 	Bonus cha;
-	int BAB;
+	Bonus BAB;
 	Bonus CMB;
 	Bonus CMD;
 	// Feats
@@ -93,9 +93,14 @@ public class MFCharacter {
 		TouchAC.addStat(dex);
 		init.addStat(dex);
 		hp = new HP(con);
-		BAB = 0;
+		BAB = new Bonus();
 		CMB = new Bonus();
+		CMB.addStat(str);
+		CMB.addBonus(BAB);
 		CMD = new Bonus(10);
+		CMD.addStat(str);
+		CMD.addStat(dex);
+		CMD.addBonus(BAB);
 		// Feats
 		skills = new Skill[38];
 		ACP = new Bonus();
@@ -297,7 +302,7 @@ public class MFCharacter {
 //				addProficiency(proficiency);
 			}
 
-			this.BAB = Integer.parseInt(getNodeText(root, "BAB"));
+			this.BAB.applyBonus(className, className, Integer.parseInt(getNodeText(root, "BAB")));
 			this.fort.applyBonus(className, className, Integer.parseInt(getNodeText(root, "Fort")));
 			this.ref.applyBonus(className, className, Integer.parseInt(getNodeText(root, "Ref")));
 			this.will.applyBonus(className, className, Integer.parseInt(getNodeText(root, "Will")));

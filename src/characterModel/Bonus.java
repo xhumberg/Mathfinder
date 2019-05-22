@@ -9,6 +9,7 @@ public class Bonus {
 	private BonusEffect circumstance;
 	private BonusEffect dodge;
 	private BonusEffect penalties;
+	private LinkedList<Bonus> otherBonuses;
 
 	public Bonus() {
 	}
@@ -83,6 +84,9 @@ public class Bonus {
 			total += dodge.getValue();
 		if (penalties != null)
 			total += penalties.getValue();
+		if (otherBonuses != null)
+			for (Bonus bonus : otherBonuses)
+				total += bonus.getValue();
 		return total;
 	}
 
@@ -111,5 +115,11 @@ public class Bonus {
 
 	public void setBase(int val) {
 		setBonus("Base", "Base", val);
+	}
+
+	public void addBonus(Bonus bonus) {
+		if (otherBonuses == null)
+			otherBonuses = new LinkedList<Bonus>();
+		otherBonuses.add(bonus);
 	}
 }
