@@ -25,10 +25,14 @@ public class Skill {
 	
 	public int getValue()
 	{
-		int bonus = myBonus.getValue() + ranks + armorCheck.getValue();
+		int bonus = myBonus.getValue() + ranks;
 		if(classSkill && ranks > 0)
 		{
 			bonus += 3;
+		}
+		if(armorCheck != null)
+		{
+			 bonus += armorCheck.getValue();
 		}
 		return bonus;
 	}
@@ -46,5 +50,15 @@ public class Skill {
 	public void addRanks(int newRanks)
 	{
 		ranks += newRanks;
+	}
+	
+	public void setClassSkill()
+	{
+		classSkill = true;
+	}
+	
+	public void setACP(Bonus newACP)
+	{
+		// Placeholder
 	}
 }

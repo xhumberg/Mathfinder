@@ -196,14 +196,37 @@ public class MFCharacter {
 	
 	public void giveRanks(String skillName, int ranks)
 	{
-		skillType st = skillType.valueOf(skillName.toUpperCase().replace(' ', '_'));
+		skillType st = skillFromString(skillName);
 		skills[st.ordinal()].addRanks(ranks);
 	}
 	
 	public int getRanks(String skillName)
 	{
-		skillType st = skillType.valueOf(skillName.toUpperCase().replace(' ', '_'));
+		skillType st = skillFromString(skillName);
 		return skills[st.ordinal()].getRanks();
+	}
+	
+	public int getSkillBonus(String skillName)
+	{
+		skillType st = skillFromString(skillName);
+		return skills[st.ordinal()].getValue();
+	}
+	
+	public void setClassSkill(String skillName)
+	{
+		skillType st = skillFromString(skillName);
+		skills[st.ordinal()].setClassSkill();
+	}
+	
+	public void setACP(int acp)
+	{
+		ACP.addPenalty("Base", acp);
+		System.out.println(ACP.getValue());
+	}
+	
+	private skillType skillFromString(String skillName)
+	{
+		return skillType.valueOf(skillName.toUpperCase().replace(' ', '_'));
 	}
 
 	/**

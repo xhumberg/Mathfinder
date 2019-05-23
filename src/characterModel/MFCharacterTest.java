@@ -81,20 +81,20 @@ class MFCharacterTest {
 		skillbob.wis.setBase(18);
 		skillbob.cha.setBase(20);
 		
-//		skillbob.setClassSkill("Acrobatics");
-//		skillbob.setClassSkill("Perform A");
-//		skillbob.setClassSkill("Diplomacy");
-//		skillbob.setClassSkill("Climb");
+		skillbob.setClassSkill("Acrobatics");
+		skillbob.setClassSkill("Perform A");
+		skillbob.setClassSkill("Diplomacy"); 
+		skillbob.setClassSkill("Climb");
 		
-//		skillbob.setACP(-3);
+		skillbob.setACP(-3);
 		
 		skillbob.giveRanks("Acrobatics", 4);
 		skillbob.giveRanks("Perception", 10);
 		skillbob.giveRanks("Swim", 2);
 		
-//		assertEquals(1+3+4-3, skillbob.getSkillBonus("Acrobatics"));
-//		assertEquals(4+10, skillbob.getSkillBonus("Perception"));
-//		assertEquals(-1+2-3, skillbob.getSkillBonus("Swim"));
-//		assertEquals(1-3, skillbob.getSkillBonus("Disable Device"));
+		assertEquals(1+3+4-3, skillbob.getSkillBonus("Acrobatics"));
+		assertEquals(4+10, skillbob.getSkillBonus("Perception"));
+		assertEquals(-1+2-3, skillbob.getSkillBonus("Swim"));
+		assertEquals(1-3, skillbob.getSkillBonus("Disable Device"));
 	}
 }
