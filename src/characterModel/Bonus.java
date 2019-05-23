@@ -36,6 +36,7 @@ public class Bonus {
 	}
 
 	private void placeBonus(String source, String type, int amount, boolean forcePlacement) {
+		//TODO: implement forcePlacement
 		if (type.equals("Circumstance")) {
 			if (circumstance == null)
 				circumstance = new BonusEffect(true);
@@ -131,7 +132,7 @@ public class Bonus {
 	 * Note, this function is incapable of removing bonuses added using the addBonus and addStat functions.
 	 * @param source
 	 */
-	public void removeBonus(String source) {
+	public void removeSource(String source) {
 		if (nonStackingBonuses != null)
 			for (BonusEffect e : nonStackingBonuses.values())
 				e.removeSource(source);

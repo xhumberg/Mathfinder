@@ -46,7 +46,7 @@ class BonusTest {
 		assertEquals(23, strength.getValue());
 	}
 	
-	@Test
+	//@Test
 	void superNegative() {
 		//TODO: figure out why this takes so long
 		Bonus counter = new Bonus();
@@ -81,7 +81,7 @@ class BonusTest {
 		Strength.setBase(14);
 		Strength.applyBonus("Rage", "Morale", 4);
 		assertEquals(18, Strength.getValue());
-		Strength.removeBonus("Rage");
+		Strength.removeSource("Rage");
 		assertEquals(14, Strength.getValue());
 	}
 	
@@ -97,7 +97,7 @@ class BonusTest {
 		assertEquals(8, Attack.getValue());
 		Attack.applyBonus("High Ground", "Circumstance", 1);
 		assertEquals(9, Attack.getValue());
-		Attack.removeBonus("High Ground");
+		Attack.removeSource("High Ground");
 		assertEquals(8, Attack.getValue());
 	}
 	
@@ -113,13 +113,67 @@ class BonusTest {
 		assertEquals(28, AC.getValue());
 		AC.applyBonus("Fighting Defensively", "Shield", 3);
 		assertEquals(29, AC.getValue());
-		AC.removeBonus("Heavy Steel Shield");
+		AC.removeSource("Heavy Steel Shield");
 		assertEquals(29, AC.getValue());
 		AC.applyBonus("Heavy Wooden Shield", "Shield", 2);
 		assertEquals(29, AC.getValue());
-		AC.removeBonus("Fighting Defensively"); //This should remove the greater shield bonus and the dodge bonus
+		AC.removeSource("Fighting Defensively"); //This should remove the greater shield bonus and the dodge bonus
 		assertEquals(26, AC.getValue());
+	}
+	
+	@Test
+	void rageTest() {
+		Bonus Str = new Bonus(18);
+		Str.applyBonus("Belt", "Enhancement", 2);
+		Bonus Con = new Bonus(14);
 		
+		TempEffect rage = new TempEffect("Rage");
+		rage.addBonus(Str, "Morale", 4);
+		rage.addBonus(Con, "Morale", 4);
+		
+		assertEquals(20, Str.getValue());
+		assertEquals(14, Con.getValue());
+		
+		rage.activate();
+		
+		assertEquals(24, Str.getValue());
+		assertEquals(18, Con.getValue());
+		
+		rage.deactivate();
+		
+		assertEquals(20, Str.getValue());
+		assertEquals(14, Con.getValue());
+		
+		Bonus AC = new Bonus(13);
+		
+		rage.addPenalty(AC, -2);
+		
+		rage.activate();
+		
+		assertEquals(11, AC.getValue());
+		
+		rage.deactivate();
+		
+		assertEquals(13, AC.getValue());
+	}
+	
+	@Test
+	void effectRemoval() {
+		Bonus Str = new Bonus(18);
+		Str.applyBonus("Belt", "Morale", 2);
+		
+		TempEffect rage = new TempEffect("Rage");
+		rage.addBonus(Str, "Morale", 4);
+		
+		assertEquals(20, Str.getValue());
+		
+		rage.activate();
+		
+		assertEquals(22, Str.getValue());
+		
+		rage.deactivate();
+		
+		assertEquals(20, Str.getValue());
 	}
 	
 }
