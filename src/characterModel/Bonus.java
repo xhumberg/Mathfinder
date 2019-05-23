@@ -9,6 +9,7 @@ public class Bonus {
 	private BonusEffect circumstance;
 	private BonusEffect dodge;
 	private BonusEffect penalties;
+	private LinkedList<Bonus> otherBonuses;
 
 	public Bonus() {
 	}
@@ -36,11 +37,15 @@ public class Bonus {
 
 	private void placeBonus(String source, String type, int amount, boolean forcePlacement) {
 		if (type.equals("Circumstance")) {
-			// TODO: place Circumstance
+			if (circumstance == null)
+				circumstance = new BonusEffect(true);
+			circumstance.addEffect(source, amount);
 			return;
 		}
 		if (type.equals("Dodge")) {
-			// TODO: place Dodge
+			if (dodge == null)
+				dodge = new BonusEffect(true);
+			dodge.addEffect(source, amount);
 			return;
 		}
 
@@ -83,6 +88,9 @@ public class Bonus {
 			total += dodge.getValue();
 		if (penalties != null)
 			total += penalties.getValue();
+		if (otherBonuses != null)
+			for (Bonus bonus : otherBonuses)
+				total += bonus.getValue();
 		return total;
 	}
 
@@ -111,5 +119,27 @@ public class Bonus {
 
 	public void setBase(int val) {
 		setBonus("Base", "Base", val);
+	}
+
+	public void addBonus(Bonus bonus) {
+		if (otherBonuses == null)
+			otherBonuses = new LinkedList<Bonus>();
+		otherBonuses.add(bonus);
+	}
+	
+	/**
+	 * Note, this function is incapable of removing bonuses added using the addBonus and addStat functions.
+	 * @param source
+	 */
+	public void removeBonus(String source) {
+		if (nonStackingBonuses != null)
+			for (BonusEffect e : nonStackingBonuses.values())
+				e.removeSource(source);
+		if (circumstance != null)
+			circumstance.removeSource(source);
+		if (dodge != null)
+			dodge.removeSource(source);
+		if (penalties != null)
+			penalties.removeSource(source);
 	}
 }

@@ -1,6 +1,8 @@
 package characterModel;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -8,47 +10,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
-enum skillType
-{
-	ACROBATICS,
-	APPRAISE,
-	BLUFF,
-	CLIMB,
-	CRAFT_A,
-	CRAFT_B,
-	DIPLOMACY,
-	DISABLE_DEVICE,
-	DISGUISE,
-	ESCAPE_ARTIST,
-	FLY,
-	HANDLE_ANIMAL,
-	HEAL,
-	INTIMIDATE,
-	KNOWLEDGE_ARCANA,
-	KNOWLEDGE_DUNGEONEERING,
-	KNOWLEDGE_ENGINEERING,
-	KNOWLEDGE_GEOGRAPHY,
-	KNOWLEDGE_HISTORY,
-	KNOWLEDGE_LOCAL,
-	KNOWLEDGE_NATURE,
-	KNOWLEDGE_NOBILITY,
-	KNOWLEDGE_PLANES,
-	KNOWLEDGE_RELIGION,
-	LINGUISTICS,
-	PERCEPTION,
-	PERFORM_A,
-	PERFORM_B,
-	PROFESSION_A,
-	PROFESSION_B,
-	RIDE,
-	SENSE_MOTIVE,
-	SLEIGHT_OF_HAND,
-	SPELLCRAFT,
-	STEALTH,
-	SURVIVAL,
-	SWIM,
-	USE_MAGIC_DEVICE
+enum skillType {
+	ACROBATICS, APPRAISE, BLUFF, CLIMB, CRAFT_A, CRAFT_B, DIPLOMACY, DISABLE_DEVICE, DISGUISE, ESCAPE_ARTIST, FLY,
+	HANDLE_ANIMAL, HEAL, INTIMIDATE, KNOWLEDGE_ARCANA, KNOWLEDGE_DUNGEONEERING, KNOWLEDGE_ENGINEERING,
+	KNOWLEDGE_GEOGRAPHY, KNOWLEDGE_HISTORY, KNOWLEDGE_LOCAL, KNOWLEDGE_NATURE, KNOWLEDGE_NOBILITY, KNOWLEDGE_PLANES,
+	KNOWLEDGE_RELIGION, LINGUISTICS, PERCEPTION, PERFORM_A, PERFORM_B, PROFESSION_A, PROFESSION_B, RIDE, SENSE_MOTIVE,
+	SLEIGHT_OF_HAND, SPELLCRAFT, STEALTH, SURVIVAL, SWIM, USE_MAGIC_DEVICE
 }
 
 public class MFCharacter {
@@ -63,7 +32,7 @@ public class MFCharacter {
 	Bonus AC;
 	Bonus TouchAC;
 	Bonus FFAC;
-	// HP
+	HP hp;
 	Bonus fort;
 	Bonus ref;
 	Bonus will;
@@ -78,13 +47,13 @@ public class MFCharacter {
 	Bonus pfint;
 	Bonus wis;
 	Bonus cha;
-	int BAB;
+	Bonus BAB;
 	Bonus CMB;
 	Bonus CMD;
 	// Feats
 	Skill skills[];
 	Bonus ACP;
-	// Languages
+	List<String> languages;
 	// SQ
 	// Combat Gear
 	// Other Gear
@@ -105,7 +74,7 @@ public class MFCharacter {
 		AC = new Bonus(10);
 		TouchAC = new Bonus(10);
 		FFAC = new Bonus(10);
-		// HP
+		// HP must be initialized after con.
 		fort = new Bonus();
 		ref = new Bonus();
 		will = new Bonus();
@@ -119,14 +88,26 @@ public class MFCharacter {
 		pfint = new Bonus();
 		wis = new Bonus();
 		cha = new Bonus();
-		BAB = 0;
+		fort.addStat(con);
+		ref.addStat(dex);
+		will.addStat(wis);
+		AC.addStat(dex);
+		TouchAC.addStat(dex);
+		init.addStat(dex);
+		hp = new HP(con);
+		BAB = new Bonus();
 		CMB = new Bonus();
+		CMB.addStat(str);
+		CMB.addBonus(BAB);
 		CMD = new Bonus(10);
+		CMD.addStat(str);
+		CMD.addStat(dex);
+		CMD.addBonus(BAB);
 		// Feats
 		skills = new Skill[38];
 		ACP = new Bonus();
-		//ACP.setBase(num);
-		
+		// ACP.setBase(num);
+
 		skills[skillType.ACROBATICS.ordinal()] = new Skill(dex, ACP);
 		skills[skillType.APPRAISE.ordinal()] = new Skill(pfint);
 		skills[skillType.BLUFF.ordinal()] = new Skill(cha);
@@ -165,9 +146,8 @@ public class MFCharacter {
 		skills[skillType.SURVIVAL.ordinal()] = new Skill(wis);
 		skills[skillType.SWIM.ordinal()] = new Skill(str, ACP);
 		skills[skillType.USE_MAGIC_DEVICE.ordinal()] = new Skill(cha);
-			
-		
-		// Languages
+
+		languages = new LinkedList<String>();
 		// SQ
 		// Combat Gear
 		// Other Gear
@@ -253,7 +233,7 @@ public class MFCharacter {
 		sheet.append("\nInit ");
 		sheet.append(init);
 		sheet.append("; Senses: Perception ");
-		// Perception
+		sheet.append(skills[skillType.PERCEPTION.ordinal()].getValue());
 		sheet.append("\n----------\nDefense\n----------\nAC ");
 		sheet.append(AC);
 		sheet.append(", touch ");
@@ -262,7 +242,7 @@ public class MFCharacter {
 		sheet.append(FFAC);
 		// Specify types of armor bonus
 		sheet.append("\nhp ");
-		// HP
+		sheet.append(getEffectiveHP() + "/" + getMaxHP());
 		// Hit dice specs
 		sheet.append("\nFort ");
 		sheet.append(fort);
@@ -298,7 +278,8 @@ public class MFCharacter {
 		sheet.append(CMD);
 		// Feats
 		// Skills
-		// Languages
+		sheet.append("\nLanguages: ");
+		sheet.append(languages.toString().replace("[", "").replace("]", ""));
 		// SQ
 		// Combat Gear
 		// Other Gear
@@ -325,26 +306,58 @@ public class MFCharacter {
 
 			/*
 			 * Base level allows parsing of: - HD - Skills - Proficiencies - BAB - Fort -
-			 * Ref - Will - SQ - SAttack - And more later
+			 * Ref - Will - SQ - SAttack - SDefense
 			 */
 
-			// Add specified hit dice
-			// Add classSkills first
-			// add Skills per level here. This will allow us to put ranks in.
-			// read all proficiencies.
-			this.BAB = Integer.parseInt(getNodeText(root, "BAB"));
+			hp.addHD(DiceType.valueOf(getNodeText(root, "HD")));
+
+			Node skills = getNode(root, "Skills");
+
+			// Get number of skills per level.
+
+			// Get class skills
+			NodeList skillList = getNodeList(skills, "classSkill");
+
+			for (int i = 0; i < skillList.getLength(); i++) {
+//				setClassSkill(skillList.item(i).getTextContent());
+			}
+
+			NodeList proficienciesList = getNodeList(root, "Proficient");
+
+			for (int i = 0; i < proficienciesList.getLength(); i++) {
+				String proficiency = proficienciesList.item(i).getTextContent();
+				proficiency = proficiency.replace(" ", "_").toUpperCase();
+//				addProficiency(proficiency);
+			}
+
+			this.BAB.applyBonus(className, className, Integer.parseInt(getNodeText(root, "BAB")));
 			this.fort.applyBonus(className, className, Integer.parseInt(getNodeText(root, "Fort")));
 			this.ref.applyBonus(className, className, Integer.parseInt(getNodeText(root, "Ref")));
 			this.will.applyBonus(className, className, Integer.parseInt(getNodeText(root, "Will")));
-			// Add special qualities
-			// Apply special quality bonuses
-			// Add special quality effects
-			// Add SAttacks
-			// Add SAttack bonuses
-			// Add SAttack effects
-			// Add SDefense
-			// Add SDefense bonuses
-			// Add SDefense effects
+
+			NodeList SQList = getNodeList(root, "SQ");
+			for (int i = 0; i < SQList.getLength(); i++) {
+				Node SQ = SQList.item(i);
+				// SQ have a name
+				// SQ have a description
+				// SQ CAN have bonuses and/or effects
+			}
+
+			NodeList SAttackList = getNodeList(root, "SAttack");
+			for (int i = 0; i < SAttackList.getLength(); i++) {
+				Node SAttack = SAttackList.item(i);
+				// SQ have a name
+				// SQ have a description
+				// SQ CAN have bonuses and/or effects
+			}
+
+			NodeList SDefenseList = getNodeList(root, "SDefense");
+			for (int i = 0; i < SDefenseList.getLength(); i++) {
+				Node SDefense = SDefenseList.item(i);
+				// SQ have a name
+				// SQ have a description
+				// SQ CAN have bonuses and/or effects
+			}
 
 			level++;
 
@@ -353,11 +366,56 @@ public class MFCharacter {
 		}
 	}
 
-	private String getNodeText(Node parent, String tagName) {
+	private NodeList getNodeList(Node parent, String tagName) {
 		Element element = (Element) parent;
 
-		return element.getElementsByTagName(tagName).item(0).getTextContent();
+		return element.getElementsByTagName(tagName);
+	}
+
+	private Node getNode(Node parent, String tagName) {
+		return getNodeList(parent, tagName).item(0);
+	}
+
+	private String getNodeText(Node parent, String tagName) {
+		return getNode(parent, tagName).getTextContent();
 	}
 	// XML Parsers
+
+	public void addHD(DiceType type) {
+		hp.addHD(type);
+	}
+
+	public Integer getMaxHP() {
+		return hp.getMaxHP();
+	}
+
+	public void favoredClassHP(int amount) {
+		hp.favoredClassBonus = amount;
+	}
+
+	public void damage(int amount) {
+		hp.damage(amount);
+	}
+
+	public void heal(int amount) {
+		hp.heal(amount);
+	}
+
+	public int getCurrentHP() {
+		return hp.getCurrentHP();
+	}
+
+	public int getEffectiveHP() {
+		return hp.getEffectiveHP();
+	}
+
+	public void damage(int amount, boolean nonlethal) {
+		hp.damage(amount, nonlethal);
+	}
+
+	public void giveLanguage(String language) {
+		if (language != null)
+			languages.add(language);
+	}
 
 }

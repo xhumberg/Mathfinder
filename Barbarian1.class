@@ -1,13 +1,14 @@
 ﻿<?xml version="1.0"?>
 <class name="Barbarian 1">
-	<HD>d12</HD>
+	<HD>D12</HD>
 	<Skills perLevel="4">
 		<classSkill>Acrobatics</classSkill>
 		<classSkill>Climb</classSkill>
-		<classSkill>Craft</classSkill>
+		<classSkill>Craft A</classSkill>
+		<classSkill>Craft B</classSkill>
 		<classSkill>Handle Animal</classSkill>
 		<classSkill>Intimidate</classSkill>
-		<classSkill>Knowledge (Nature)</classSkill>
+		<classSkill>Knowledge Nature</classSkill>
 		<classSkill>Perception</classSkill>
 		<classSkill>Ride</classSkill>
 		<classSkill>Survival</classSkill>
