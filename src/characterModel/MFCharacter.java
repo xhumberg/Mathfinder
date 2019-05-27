@@ -63,6 +63,8 @@ public class MFCharacter {
 	List<String> languages;
 	// SQ
 	// Combat Gear
+	
+	
 	// Other Gear
 	// Other
 
