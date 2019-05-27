@@ -1,7 +1,7 @@
 package characterModel;
 
-public class Skill {
-	private Bonus myBonus;
+public class Skill{
+	Bonus myBonus;
 	private int ranks;
 	// private boolean untrained;
 	private Bonus armorCheck;
