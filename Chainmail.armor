@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<Armor name="Chainmail">
+	<Cost>150<Cost>
+	<Weight>40</Weight>
+	<ArmorBonus>6<ArmorBonus>
+	<MaxDex>2</MaxDex>
+	<ACP>-5</ACP>
+	<SpellFailure>30</SpellFailure>
+	<MSpeed>20</MSpeed>
+	<SSpeed>15</SSpeed>
+</Armor>
