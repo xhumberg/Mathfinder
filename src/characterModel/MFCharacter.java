@@ -1,10 +1,10 @@
 package characterModel;
 
 import java.io.File;
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,15 +23,10 @@ enum skillType {
 }
 
 public class MFCharacter {
-	String name;
-	String race;
-	String pfclass;
-	int level;
-	String alignment;
-	String size;
-	String type;
 	
-	Dictionary<String, Bonus> bonusIndex;
+	BasicInfo basic;
+	
+	Map<String, Bonus> bonusIndex;
 	Bonus init;
 	Bonus AC;
 	Bonus TouchAC;
@@ -72,16 +67,10 @@ public class MFCharacter {
 	 * Initializes the character to default values.
 	 */
 	private MFCharacter() {
-		name = "Dave";
-		race = "Human";
-		pfclass = "Barbarian";
-		level = 0;
-		alignment = "N";
-		size = "Medium";
-		type = "Humanoid (Human)";
+		basic = BasicInfo.generateNewBasicInfo();
 		
 		// Hashtable to access bonuses
-		bonusIndex = new Hashtable();
+		bonusIndex = new HashMap<String, Bonus>();
 		
 		init = new Bonus(); bonusIndex.put("Initiative", init);
 		AC = new Bonus(10); bonusIndex.put("AC", AC);
@@ -181,7 +170,7 @@ public class MFCharacter {
 	 * @return A String containing the character's name
 	 */
 	public String getName() {
-		return new String(name);
+		return basic.getName();
 	}
 
 	/**
@@ -192,7 +181,7 @@ public class MFCharacter {
 	 */
 	public MFCharacter(String name) {
 		this();
-		this.name = name;
+		basic.setName(name);
 	}
 	
 	public void giveRanks(String skillName, int ranks)
@@ -242,20 +231,8 @@ public class MFCharacter {
 	 */
 	public String getStatBlock() {
 		StringBuilder sheet = new StringBuilder();
-
-		sheet.append(name);
-		sheet.append("\n");
-		sheet.append(race);
-		sheet.append(" ");
-		sheet.append(pfclass);
-		sheet.append(" ");
-		sheet.append(level);
-		sheet.append("\n");
-		sheet.append(alignment);
-		sheet.append(" ");
-		sheet.append(size);
-		sheet.append(" ");
-		sheet.append(type);
+		sheet.append(basic);
+		
 		sheet.append("\nInit ");
 		sheet.append(init);
 		sheet.append("; Senses: Perception ");
@@ -385,7 +362,7 @@ public class MFCharacter {
 				// SQ CAN have bonuses and/or effects
 			}
 
-			level++;
+			basic.setLevel(basic.getLevel()+1);
 
 		} catch (Exception e) {
 			e.printStackTrace();
