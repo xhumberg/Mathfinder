@@ -25,36 +25,37 @@ enum skillType {
 public class MFCharacter {
 	
 	BasicInfo basic;
+	Stats stats;
 	
-	Map<String, Bonus> bonusIndex;
-	Bonus init;
-	Bonus AC;
-	Bonus TouchAC;
-	Bonus FFAC;
+	Map<String, Statistic> bonusIndex;
+	Statistic init;
+	Statistic AC;
+	Statistic TouchAC;
+	Statistic FFAC;
 	HP hp;
-	Bonus fort;
-	Bonus ref;
-	Bonus will;
+	Statistic fort;
+	Statistic ref;
+	Statistic will;
 	// Defensive Abilities
-	Bonus landSpeed;
-	Bonus swimSpeed;
-	Bonus climbSpeed;
-	Bonus flySpeed;
+	Statistic landSpeed;
+	Statistic swimSpeed;
+	Statistic climbSpeed;
+	Statistic flySpeed;
 	// Melee attacks
 	// Ranged attacks
 	// Special attacks
-	Bonus str;
-	Bonus dex;
-	Bonus con;
-	Bonus pfint;
-	Bonus wis;
-	Bonus cha;
-	Bonus BAB;
-	Bonus CMB;
-	Bonus CMD;
+	Statistic str;
+	Statistic dex;
+	Statistic con;
+	Statistic pfint;
+	Statistic wis;
+	Statistic cha;
+	Statistic BAB;
+	Statistic CMB;
+	Statistic CMD;
 	// Feats
 	Skill skills[];
-	Bonus ACP;
+	Statistic ACP;
 	List<String> languages;
 	// SQ
 	// Combat Gear
@@ -70,33 +71,33 @@ public class MFCharacter {
 		basic = BasicInfo.generateNewBasicInfo();
 		
 		// Hashtable to access bonuses
-		bonusIndex = new HashMap<String, Bonus>();
+		bonusIndex = new HashMap<String, Statistic>();
 		
-		init = new Bonus(); bonusIndex.put("Initiative", init);
-		AC = new Bonus(10); bonusIndex.put("AC", AC);
-		TouchAC = new Bonus(10); bonusIndex.put("Touch AC", TouchAC);
-		FFAC = new Bonus(10); bonusIndex.put("Flat-footed AC", FFAC);
+		init = Statistic.createFlatStatistic(); bonusIndex.put("Initiative", init);
+		AC = Statistic.createStatisticWithBaseValue(10); bonusIndex.put("AC", AC);
+		TouchAC = Statistic.createStatisticWithBaseValue(10); bonusIndex.put("Touch AC", TouchAC);
+		FFAC = Statistic.createStatisticWithBaseValue(10); bonusIndex.put("Flat-footed AC", FFAC);
 		// HP must be initialized after con.
-		fort = new Bonus(); bonusIndex.put("Fort", fort);
-		ref = new Bonus(); bonusIndex.put("Ref", ref);
-		will = new Bonus(); bonusIndex.put("Will", will);
-		landSpeed = new Bonus(); bonusIndex.put("Speed", landSpeed);
-		swimSpeed = new Bonus(); bonusIndex.put("Swim Speed", swimSpeed);
-		climbSpeed = new Bonus(); bonusIndex.put("Climb Speed", climbSpeed);
-		flySpeed = new Bonus(); bonusIndex.put("Fly Speed", flySpeed);
+		fort = Statistic.createFlatStatistic(); bonusIndex.put("Fort", fort);
+		ref = Statistic.createFlatStatistic(); bonusIndex.put("Ref", ref);
+		will = Statistic.createFlatStatistic(); bonusIndex.put("Will", will);
+		landSpeed = Statistic.createFlatStatistic(); bonusIndex.put("Speed", landSpeed);
+		swimSpeed = Statistic.createFlatStatistic(); bonusIndex.put("Swim Speed", swimSpeed);
+		climbSpeed = Statistic.createFlatStatistic(); bonusIndex.put("Climb Speed", climbSpeed);
+		flySpeed = Statistic.createFlatStatistic(); bonusIndex.put("Fly Speed", flySpeed);
 		// Melee attacks
 		// Ranged attacks
 		// Special attacks
-		str = new Bonus(); bonusIndex.put("Str", str);
-		dex = new Bonus(); bonusIndex.put("Dex", dex);
-		con = new Bonus(); bonusIndex.put("Con", con);
-		pfint = new Bonus(); bonusIndex.put("Int", pfint);
-		wis = new Bonus(); bonusIndex.put("Wis", wis);
-		cha = new Bonus(); bonusIndex.put("Cha", cha);
-		BAB = new Bonus(); bonusIndex.put("BAB", BAB);
-		CMB = new Bonus(); bonusIndex.put("CMB", CMB);
-		CMD = new Bonus(10); bonusIndex.put("CMD", CMD);
-		ACP = new Bonus(); bonusIndex.put("ACP", ACP);
+		str = Statistic.createStatisticWithBaseValue(10); bonusIndex.put("Str", str);
+		dex = Statistic.createStatisticWithBaseValue(10); bonusIndex.put("Dex", dex);
+		con = Statistic.createStatisticWithBaseValue(10); bonusIndex.put("Con", con);
+		pfint = Statistic.createStatisticWithBaseValue(10); bonusIndex.put("Int", pfint);
+		wis = Statistic.createStatisticWithBaseValue(10); bonusIndex.put("Wis", wis);
+		cha = Statistic.createStatisticWithBaseValue(10); bonusIndex.put("Cha", cha);
+		BAB = Statistic.createFlatStatistic(); bonusIndex.put("BAB", BAB);
+		CMB = Statistic.createFlatStatistic(); bonusIndex.put("CMB", CMB);
+		CMD = Statistic.createStatisticWithBaseValue(10); bonusIndex.put("CMD", CMD);
+		ACP = Statistic.createFlatStatistic(); bonusIndex.put("ACP", ACP);
 		
 		// HP is special
 		hp = new HP(con); bonusIndex.put("HP", hp.otherBonuses);
@@ -219,7 +220,7 @@ public class MFCharacter {
 		return skillType.valueOf(skillName.toUpperCase().replace(' ', '_'));
 	}
 
-	public Bonus getBonusFromString(String bonusName)
+	public Statistic getBonusFromString(String bonusName)
 	{
 		return bonusIndex.get(bonusName);
 	}

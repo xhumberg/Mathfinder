@@ -3,143 +3,146 @@ package characterModel;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class Bonus {
-	private LinkedList<Bonus> stats;
-	private HashMap<String, BonusEffect> nonStackingBonuses;
-	private BonusEffect circumstance;
-	private BonusEffect dodge;
-	private BonusEffect penalties;
-	private LinkedList<Bonus> otherBonuses;
+public class Statistic implements Numerical {
+	public final boolean STACKING = true;
+	public final boolean NON_STACKING = false;
 
-	public Bonus() {
+	private LinkedList<Numerical> numericalAdjustments;
+	private HashMap<String, NumericalEffect> nonStackingNumericalEffects;
+	private NumericalEffect circumstanceBonus; // circumstance bonuses always stack
+	private NumericalEffect dodgeBonus; // dodge bonuses always stack
+	private NumericalEffect penalties; // penalties always stack
+
+	int total; 
+	
+	public static Statistic createFlatStatistic() {
+		return new Statistic();
 	}
 
-	public Bonus(Integer base) {
-		applyBonus("Base", "Base", base);
+	public static Statistic createStatisticWithBaseValue(int base) {
+		return new Statistic(base);
 	}
 
-	/**
-	 * Creates a bonus of the specified type of the amount listed so long as a bonus
-	 * of equal or higher value doesn't already exist. If "Circumstance" or "Dodge"
-	 * is placed in the type field, the values are placed in a special stacking
-	 * field, otherwise bonuses of the same type do not stack.
-	 * 
-	 * @param type   - The name of the bonus, starting with a capital letter
-	 * @param amount - An integer amount specifying the bonus.
-	 */
-	public void applyBonus(String source, String type, int amount) {
-		placeBonus(source, type, amount, false);
+	private Statistic() {
 	}
 
-	public void setBonus(String source, String type, int amount) {
-		placeBonus(source, type, amount, true);
+	private Statistic(int base) {
+		addBonus("Base", "Base", base);
 	}
 
-	private void placeBonus(String source, String type, int amount, boolean forcePlacement) {
-		//TODO: implement forcePlacement
-		if (type.equals("Circumstance")) {
-			if (circumstance == null)
-				circumstance = new BonusEffect(true);
-			circumstance.addEffect(source, amount);
-			return;
+	@Override
+	public void addBonus(String sourceName, String typeName, int bonus) {
+		if (!tryToAddToStackingTypes(sourceName, typeName, bonus)) {
+			ensureNonStackingEffectExists(typeName);
+			NumericalEffect effect = nonStackingNumericalEffects.get(typeName);
+			effect.addAdjustment(sourceName, bonus);
 		}
-		if (type.equals("Dodge")) {
-			if (dodge == null)
-				dodge = new BonusEffect(true);
-			dodge.addEffect(source, amount);
-			return;
-		}
-
-		ensureMapExists();
-
-		BonusEffect effect = nonStackingBonuses.get(type);
-
-		// Ensure the effect exists
-		if (effect == null) {
-			effect = new BonusEffect(false);
-			nonStackingBonuses.put(type, effect);
-		}
-
-		effect.addEffect(source, amount);
 	}
 
-	public void addStat(Bonus stat) {
-		if (stats == null)
-			stats = new LinkedList<Bonus>();
-		stats.add(stat);
+	private boolean tryToAddToStackingTypes(String sourceName, String typeName, int bonus) {
+		if (typeName.equals("Circumstance")) {
+			addCircumstanceBonus(sourceName, bonus);
+			return true;
+		} else if (typeName.contentEquals("Dodge")) {
+			addDodgeBonus(sourceName, bonus);
+			return true;
+		}
+		return false;
 	}
 
-	public void addPenalty(String source, Integer amount) {
+	private void addCircumstanceBonus(String sourceName, int bonus) {
+		if (circumstanceBonus == null)
+			circumstanceBonus = new NumericalEffect(STACKING);
+		circumstanceBonus.addAdjustment(sourceName, bonus);
+	}
+
+	private void addDodgeBonus(String sourceName, int bonus) {
+		if (dodgeBonus == null)
+			dodgeBonus = new NumericalEffect(STACKING);
+		dodgeBonus.addAdjustment(sourceName, bonus);
+	}
+
+	private void ensureNonStackingEffectExists(String typeName) {
+		if (!nonStackingNumericalEffects.containsKey(typeName)) {
+			NumericalEffect effect = new NumericalEffect(NON_STACKING);
+			nonStackingNumericalEffects.put(typeName, effect);
+		}
+	}
+
+	@Override
+	public void addNumerical(Numerical adjustment) {
+		if (numericalAdjustments == null)
+			numericalAdjustments = new LinkedList<Numerical>();
+		numericalAdjustments.add(adjustment);
+	}
+
+	@Override
+	public void addPenalty(String sourceName, int penalty) {
 		if (penalties == null)
-			penalties = new BonusEffect(true);
-		penalties.addEffect(source, amount);
+			penalties = new NumericalEffect(STACKING);
+		penalties.addAdjustment(sourceName, penalty);
 	}
 
-	public int getValue() {
-		int total = 0;
-		if (stats != null)
-			for (Bonus stat : stats)
-				total += stat.getMod();
-		if (nonStackingBonuses != null)
-			for (BonusEffect e : nonStackingBonuses.values())
-				total += e.getValue();
-		if (circumstance != null)
-			total += circumstance.getValue();
-		if (dodge != null)
-			total += dodge.getValue();
-		if (penalties != null)
-			total += penalties.getValue();
-		if (otherBonuses != null)
-			for (Bonus bonus : otherBonuses)
-				total += bonus.getValue();
+	@Override
+	public int getAdjustmentValue() {
+		total = 0;
+		addNumericalAdjustmentsToTotal();
+		addNonStackingNumericalEffectsToTotal();
+		addStackingBonusToTotal();
+		addPenaltiesToTotal();
 		return total;
 	}
 
-	public int getMod() {
-		return (int) Math.floor((getValue() / 2) - 5);
+	private void addNumericalAdjustmentsToTotal() {
+		if (numericalAdjustments != null)
+			for (Numerical num : numericalAdjustments)
+				total += num.getAdjustmentValue();
+	}
+	
+	private void addNonStackingNumericalEffectsToTotal() {
+		if (nonStackingNumericalEffects != null)
+			for (NumericalEffect e : nonStackingNumericalEffects.values())
+				total += e.getValue();
+	}
+	
+	private void addStackingBonusToTotal() {
+		if (circumstanceBonus != null)
+			total += circumstanceBonus.getValue();
+		if (dodgeBonus != null)
+			total += dodgeBonus.getValue();
+	}
+	
+	private void addPenaltiesToTotal() {
+		if (penalties != null)
+			total += penalties.getValue();
 	}
 
-	/**
-	 * Removes all bonuses, effectively making the bonus 0.
-	 */
+	@Override
 	public void reset() {
-		nonStackingBonuses = null;
-		circumstance = null;
-		dodge = null;
+		numericalAdjustments = null;
+		nonStackingNumericalEffects = null;
+		circumstanceBonus = null;
+		dodgeBonus = null;
 		penalties = null;
 	}
 
-	private void ensureMapExists() {
-		if (nonStackingBonuses == null)
-			nonStackingBonuses = new HashMap<String, BonusEffect>();
-	}
-
 	public String toString() {
-		return String.valueOf(getValue());
+		return String.valueOf(getAdjustmentValue());
 	}
 
 	public void setBase(int val) {
-		setBonus("Base", "Base", val);
+		addBonus("Base", "Base", val);
 	}
 
-	public void addBonus(Bonus bonus) {
-		if (otherBonuses == null)
-			otherBonuses = new LinkedList<Bonus>();
-		otherBonuses.add(bonus);
-	}
-	
-	/**
-	 * Note, this function is incapable of removing bonuses added using the addBonus and addStat functions.
-	 * @param source
-	 */
+	@Override
 	public void removeSource(String source) {
-		if (nonStackingBonuses != null)
-			for (BonusEffect e : nonStackingBonuses.values())
+		if (nonStackingNumericalEffects != null)
+			for (NumericalEffect e : nonStackingNumericalEffects.values())
 				e.removeSource(source);
-		if (circumstance != null)
-			circumstance.removeSource(source);
-		if (dodge != null)
-			dodge.removeSource(source);
+		if (circumstanceBonus != null)
+			circumstanceBonus.removeSource(source);
+		if (dodgeBonus != null)
+			dodgeBonus.removeSource(source);
 		if (penalties != null)
 			penalties.removeSource(source);
 	}

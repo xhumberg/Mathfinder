@@ -1,22 +1,22 @@
 package characterModel;
 
 public class Skill{
-	Bonus myBonus;
+	Statistic myBonus;
 	private int ranks;
 	// private boolean untrained;
-	private Bonus armorCheck;
+	private Statistic armorCheck;
 	private boolean classSkill;
 
-	public Skill(Bonus stat) {
-		myBonus = new Bonus();
+	public Skill(Statistic stat) {
+		myBonus = new Statistic();
 		myBonus.addStat(stat);
 		ranks = 0;
 		// untrained = false;
-		armorCheck = new Bonus();
+		armorCheck = new Statistic();
 		classSkill = false;
 	}
 
-	public Skill(Bonus stat, Bonus ACP) {
+	public Skill(Statistic stat, Statistic ACP) {
 		this(stat);
 		armorCheck = ACP;
 	}
@@ -50,7 +50,7 @@ public class Skill{
 		classSkill = true;
 	}
 	
-	public void setACP(Bonus newACP)
+	public void setACP(Statistic newACP)
 	{
 		// Placeholder
 	}

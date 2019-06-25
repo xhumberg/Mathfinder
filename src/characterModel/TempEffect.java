@@ -5,20 +5,20 @@ import java.util.List;
 
 public class TempEffect {
 	private class BonusTriple{
-		Bonus target;
+		Statistic target;
 		String type;
 		int value;
 	}
 	
 	private class PenaltyTuple{
-		Bonus target;
+		Statistic target;
 		int value;
 	}
 	
 	String effectName;
 	List<BonusTriple> Bonuses;
 	List<PenaltyTuple> Penalties;
-	Bonus perDay;
+	Statistic perDay;
 	int used;
 	
 	public TempEffect(String name) {
@@ -26,7 +26,7 @@ public class TempEffect {
 		used = 0;
 	}
 	
-	public void addBonus(Bonus target, String type, int value) {
+	public void addBonus(Statistic target, String type, int value) {
 		BonusTriple bonus = new BonusTriple();
 		bonus.target = target;
 		bonus.type = type;
@@ -38,7 +38,7 @@ public class TempEffect {
 		Bonuses.add(bonus);
 	}
 	
-	public void addPenalty(Bonus target, int value) {
+	public void addPenalty(Statistic target, int value) {
 		PenaltyTuple penalty = new PenaltyTuple();
 		penalty.target = target;
 		penalty.value = value;

@@ -3,21 +3,21 @@ package characterModel;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BonusEffect {
+public class NumericalEffect {
 	private List<BonusTuple> effects;
 	boolean stacking;
 
-	public BonusEffect(boolean stack) {
+	public NumericalEffect(boolean stack) {
 		effects = new LinkedList<BonusTuple>();
 		stacking = stack;
 	}
 
-	public BonusEffect(String source, Integer value, boolean stack) {
+	public NumericalEffect(String source, Integer value, boolean stack) {
 		this(stack);
-		addEffect(source, value);
+		addAdjustment(source, value);
 	}
 
-	public void addEffect(String source, Integer value) {
+	public void addAdjustment(String source, Integer value) {
 		if (sourceExists(source)) {
 			BonusTuple changeMe = getSource(source);
 			changeMe.value = value;

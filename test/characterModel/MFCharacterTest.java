@@ -4,7 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class MFCharacterTest {
+public class MFCharacterTest {
+	
 	@Test
 	void getNameTest() {
 		MFCharacter Jo = new MFCharacter("Jo");

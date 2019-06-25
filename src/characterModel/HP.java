@@ -5,17 +5,17 @@ import java.util.List;
 
 public class HP {
 	List<Dice> hitDice;
-	Bonus con;
+	Statistic con;
 	int favoredClassBonus;
-	Bonus otherBonuses;
+	Statistic otherBonuses;
 	int lethalDamage;
 	int nonlethalDamage;
 
-	public HP(Bonus con) {
+	public HP(Statistic con) {
 		hitDice = new LinkedList<Dice>();
 		this.con = con;
 		favoredClassBonus = 0;
-		otherBonuses = new Bonus();
+		otherBonuses = new Statistic();
 	}
 
 	public int getMaxHP() {
