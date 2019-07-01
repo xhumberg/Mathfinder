@@ -7,4 +7,5 @@ public interface Numerical {
 	public void addNumerical(Numerical bonus);
 	public void removeSource(String sourceName);
 	public void reset();
+	public void setBase(int val);
 }

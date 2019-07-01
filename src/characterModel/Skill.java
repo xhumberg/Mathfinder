@@ -8,11 +8,11 @@ public class Skill{
 	private boolean classSkill;
 
 	public Skill(AbilityScore stat) {
-		myBonus = new Statistic();
-		myBonus.addStat(stat);
+		myBonus = Statistic.createFlatStatistic();
+		myBonus.addNumerical(stat);
 		ranks = 0;
 		// untrained = false;
-		armorCheck = new Statistic();
+		armorCheck = Statistic.createFlatStatistic();
 		classSkill = false;
 	}
 
@@ -22,13 +22,13 @@ public class Skill{
 	}
 	
 	public int getValue() {
-		int bonus = myBonus.getValue() + ranks;
+		int bonus = myBonus.getAdjustmentValue() + ranks;
 		if (classSkill && ranks > 0) {
 			bonus += 3;
 		}
 		if(armorCheck != null)
 		{
-			 bonus += armorCheck.getValue();
+			 bonus += armorCheck.getAdjustmentValue();
 		}
 		return bonus;
 	}

@@ -52,7 +52,7 @@ public class TempEffect {
 	public void activate() {
 		if (Bonuses != null)
 		for (BonusTriple triple : Bonuses) {
-			triple.target.applyBonus(effectName, triple.type, triple.value);
+			triple.target.addBonus(effectName, triple.type, triple.value);
 		}
 		if (Penalties != null)
 		for (PenaltyTuple tuple : Penalties) {

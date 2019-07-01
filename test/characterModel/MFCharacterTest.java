@@ -119,7 +119,7 @@ public class MFCharacterTest {
 		dragonDisciple.addHD(DiceType.D12);
 		dragonDisciple.addHD(DiceType.D12);
 		dragonDisciple.favoredClassHP(4);
-		dragonDisciple.constitution.setBonus("Rage", "Morale", 4);
+		dragonDisciple.constitution.addBonus("Rage", "Morale", 4);
 
 		assertEquals(42, dragonDisciple.getMaxHP());
 	}

@@ -40,4 +40,10 @@ public class AbilityScore implements Numerical {
 		
 	}
 
+	@Override
+	public void setBase(int val) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

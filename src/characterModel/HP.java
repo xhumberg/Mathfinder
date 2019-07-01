@@ -15,14 +15,14 @@ public class HP {
 		hitDice = new LinkedList<Dice>();
 		this.con = constitution;
 		favoredClassBonus = 0;
-		otherBonuses = new Statistic();
+		otherBonuses = Statistic.createFlatStatistic();
 	}
 
 	public int getMaxHP() {
 		if (hitDice.size() < 1)
 			return 0;
 		int numHD = getHDNum();
-		int totalHP = con.getMod() * numHD + favoredClassBonus + otherBonuses.getValue();
+		int totalHP = con.getAdjustmentValue() * numHD + favoredClassBonus + otherBonuses.getAdjustmentValue();
 
 		// Now for the dice
 		totalHP += hitDice.get(0).max();

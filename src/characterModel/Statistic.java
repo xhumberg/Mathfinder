@@ -132,6 +132,7 @@ public class Statistic implements Numerical {
 		return String.valueOf(getAdjustmentValue());
 	}
 
+	@Override
 	public void setBase(int val) {
 		addBonus("Base", "Base", val);
 	}
