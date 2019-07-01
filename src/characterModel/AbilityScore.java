@@ -2,6 +2,8 @@ package characterModel;
 
 public class AbilityScore implements Numerical {
 
+	
+	
 	@Override
 	public int getAdjustmentValue() {
 		// TODO Auto-generated method stub
@@ -21,15 +23,21 @@ public class AbilityScore implements Numerical {
 	}
 
 	@Override
-	public void addNumerical(String sourceName, String typeName, Numerical bonus) {
+	public void removeSource(String sourceName) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void removeSource(String sourceName) {
+	public void addNumerical(Numerical bonus) {
 		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

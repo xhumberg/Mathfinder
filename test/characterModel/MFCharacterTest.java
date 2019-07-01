@@ -20,12 +20,12 @@ public class MFCharacterTest {
 //		Raider.loadRace("Human.race");
 
 		// Set abilities
-		Raider.str.setBase(15);
-		Raider.dex.setBase(12);
-		Raider.con.setBase(14);
-		Raider.pfint.setBase(10);
-		Raider.wis.setBase(13);
-		Raider.cha.setBase(8);
+		Raider.strength.setBase(15);
+		Raider.dexterity.setBase(12);
+		Raider.constitution.setBase(14);
+		Raider.intelligence.setBase(10);
+		Raider.wisdom.setBase(13);
+		Raider.charisma.setBase(8);
 
 		// Apply class
 		Raider.loadClass("Barbarian1.class");
@@ -75,12 +75,12 @@ public class MFCharacterTest {
 	void heavySkillsTest() {
 		MFCharacter skillbob = new MFCharacter("Skillbob");
 
-		skillbob.str.setBase(9);
-		skillbob.dex.setBase(12);
-		skillbob.con.setBase(10);
-		skillbob.pfint.setBase(14);
-		skillbob.wis.setBase(18);
-		skillbob.cha.setBase(20);
+		skillbob.strength.setBase(9);
+		skillbob.dexterity.setBase(12);
+		skillbob.constitution.setBase(10);
+		skillbob.intelligence.setBase(14);
+		skillbob.wisdom.setBase(18);
+		skillbob.charisma.setBase(20);
 		
 		skillbob.setClassSkill("Acrobatics");
 		skillbob.setClassSkill("Perform A");
@@ -103,7 +103,7 @@ public class MFCharacterTest {
 	void maxHPTest() {
 		MFCharacter dragonDisciple = new MFCharacter("DD");
 
-		dragonDisciple.con.setBase(8);
+		dragonDisciple.constitution.setBase(8);
 
 		dragonDisciple.addHD(DiceType.D6);
 
@@ -119,7 +119,7 @@ public class MFCharacterTest {
 		dragonDisciple.addHD(DiceType.D12);
 		dragonDisciple.addHD(DiceType.D12);
 		dragonDisciple.favoredClassHP(4);
-		dragonDisciple.con.setBonus("Rage", "Morale", 4);
+		dragonDisciple.constitution.setBonus("Rage", "Morale", 4);
 
 		assertEquals(42, dragonDisciple.getMaxHP());
 	}
@@ -127,7 +127,7 @@ public class MFCharacterTest {
 	void lethalDamagetest() {
 		MFCharacter derek = new MFCharacter("Derek");
 
-		derek.con.setBase(16);
+		derek.constitution.setBase(16);
 
 		for (int i = 0; i < 5; i++)
 			derek.addHD(DiceType.D10);
@@ -160,7 +160,7 @@ public class MFCharacterTest {
 	void nonlethalDamagetest() {
 		MFCharacter derek = new MFCharacter("Derek");
 
-		derek.con.setBase(16);
+		derek.constitution.setBase(16);
 
 		for (int i = 0; i < 5; i++)
 			derek.addHD(DiceType.D10);
@@ -193,7 +193,7 @@ public class MFCharacterTest {
 	void doublelDamagetest() {
 		MFCharacter derek = new MFCharacter("Derek");
 
-		derek.con.setBase(16);
+		derek.constitution.setBase(16);
 
 		for (int i = 0; i < 5; i++)
 			derek.addHD(DiceType.D10);

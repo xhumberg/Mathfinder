@@ -7,7 +7,7 @@ public class Skill{
 	private Statistic armorCheck;
 	private boolean classSkill;
 
-	public Skill(Statistic stat) {
+	public Skill(AbilityScore stat) {
 		myBonus = new Statistic();
 		myBonus.addStat(stat);
 		ranks = 0;
@@ -16,7 +16,7 @@ public class Skill{
 		classSkill = false;
 	}
 
-	public Skill(Statistic stat, Statistic ACP) {
+	public Skill(AbilityScore stat, Statistic ACP) {
 		this(stat);
 		armorCheck = ACP;
 	}

@@ -5,15 +5,15 @@ import java.util.List;
 
 public class HP {
 	List<Dice> hitDice;
-	Statistic con;
+	AbilityScore con;
 	int favoredClassBonus;
 	Statistic otherBonuses;
 	int lethalDamage;
 	int nonlethalDamage;
 
-	public HP(Statistic con) {
+	public HP(AbilityScore constitution) {
 		hitDice = new LinkedList<Dice>();
-		this.con = con;
+		this.con = constitution;
 		favoredClassBonus = 0;
 		otherBonuses = new Statistic();
 	}

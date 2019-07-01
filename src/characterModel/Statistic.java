@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Statistic implements Numerical {
-	public final boolean STACKING = true;
-	public final boolean NON_STACKING = false;
+	private final boolean STACKING = true;
+	private final boolean NON_STACKING = false;
 
 	private LinkedList<Numerical> numericalAdjustments;
 	private HashMap<String, NumericalEffect> nonStackingNumericalEffects;
@@ -63,6 +63,8 @@ public class Statistic implements Numerical {
 	}
 
 	private void ensureNonStackingEffectExists(String typeName) {
+		if (nonStackingNumericalEffects == null)
+			nonStackingNumericalEffects = new HashMap<String, NumericalEffect>();
 		if (!nonStackingNumericalEffects.containsKey(typeName)) {
 			NumericalEffect effect = new NumericalEffect(NON_STACKING);
 			nonStackingNumericalEffects.put(typeName, effect);
