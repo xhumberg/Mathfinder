@@ -1,49 +1,32 @@
 package characterModel;
 
-public class AbilityScore implements Numerical {
-
+public class AbilityScore extends Numerical {
+	public static AbilityScore getFlatAbilityScore() {
+		return new AbilityScore(10);
+	}
 	
+	public static AbilityScore getAbilityScoreWithBase(int base) {
+		return new AbilityScore(base);
+	}
+
+	public AbilityScore(int base) {
+		super(base);
+	}
 	
 	@Override
 	public int getAdjustmentValue() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void addBonus(String sourceName, String typeName, int bonus) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void addPenalty(String sourceName, int penalty) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void removeSource(String sourceName) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void addNumerical(Numerical bonus) {
-		// TODO Auto-generated method stub
+		int score = getScore();
+		return (int)Math.floor(score/2)-5;
 		
 	}
-
-	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		
+	
+	public int getScore() {
+		return super.getAdjustmentValue();
 	}
-
-	@Override
-	public void setBase(int val) {
-		// TODO Auto-generated method stub
-		
+	
+	public String toString() {
+		return String.valueOf(getScore()) + "(" + 
+				(getAdjustmentValue() < 0 ? "-" : "") +
+				getAdjustmentValue() + ")";
 	}
-
 }

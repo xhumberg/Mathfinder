@@ -25,7 +25,7 @@ enum skillType {
 public class MFCharacter {
 	
 	BasicInfo basic;
-	Stats stats;
+	AbilityScoreGroup stats;
 	
 	Map<String, Numerical> bonusIndex;
 	Statistic init;
@@ -42,12 +42,7 @@ public class MFCharacter {
 	Statistic climbSpeed;
 	Statistic flySpeed;
 	// Melee attacks
-	AbilityScore strength;
-	AbilityScore dexterity;
-	AbilityScore constitution;
-	AbilityScore intelligence;
-	AbilityScore wisdom;
-	AbilityScore charisma;
+	AbilityScoreGroup abilityScores;
 	Statistic BAB;
 	Statistic CMB;
 	Statistic CMD;
@@ -86,81 +81,89 @@ public class MFCharacter {
 		// Melee attacks
 		// Ranged attacks
 		// Special attacks
-		strength = new AbilityScore(); bonusIndex.put("Str", strength);
-		dexterity = new AbilityScore(); bonusIndex.put("Dex", dexterity);
-		constitution = new AbilityScore(); bonusIndex.put("Con", constitution);
-		intelligence = new AbilityScore(); bonusIndex.put("Int", intelligence);
-		wisdom = new AbilityScore(); bonusIndex.put("Wis", wisdom);
-		charisma = new AbilityScore(); bonusIndex.put("Cha", charisma);
+		
+		abilityScores = new AbilityScoreGroup();
+		
+		putAbilityScoresInNumericalIndex();
+		
 		BAB = Statistic.createFlatStatistic(); bonusIndex.put("BAB", BAB);
 		CMB = Statistic.createFlatStatistic(); bonusIndex.put("CMB", CMB);
 		CMD = Statistic.createStatisticWithBaseValue(10); bonusIndex.put("CMD", CMD);
 		ACP = Statistic.createFlatStatistic(); bonusIndex.put("ACP", ACP);
 		
 		// HP is special
-		hp = new HP(constitution); bonusIndex.put("HP", hp.otherBonuses);
+		hp = new HP(abilityScores.getConstitution()); bonusIndex.put("HP", hp.otherBonuses);
 		
 		// Add stats to skills
-		fort.addNumerical(constitution);
-		ref.addNumerical(dexterity);
-		will.addNumerical(wisdom);
-		AC.addNumerical(dexterity);
-		TouchAC.addNumerical(dexterity);
-		init.addNumerical(dexterity);
-		CMB.addNumerical(strength);
+		fort.addNumerical(abilityScores.getConstitution());
+		ref.addNumerical(abilityScores.getDexterity());
+		will.addNumerical(abilityScores.getWisdom());
+		AC.addNumerical(abilityScores.getDexterity());
+		TouchAC.addNumerical(abilityScores.getDexterity());
+		init.addNumerical(abilityScores.getDexterity());
+		CMB.addNumerical(abilityScores.getStrength());
 		CMB.addNumerical(BAB);
-		CMD.addNumerical(strength);
-		CMD.addNumerical(dexterity);
+		CMD.addNumerical(abilityScores.getStrength());
+		CMD.addNumerical(abilityScores.getStrength());
 		CMD.addNumerical(BAB);
 		// Feats
 		
 		// Skills
 		skills = new Skill[38];
 		
-		skills[skillType.ACROBATICS.ordinal()] = new Skill(dexterity, ACP); bonusIndex.put("Acrobatics", skills[skillType.ACROBATICS.ordinal()].myBonus);
-		skills[skillType.APPRAISE.ordinal()] = new Skill(intelligence); bonusIndex.put("Appraise", skills[skillType.APPRAISE.ordinal()].myBonus);
-		skills[skillType.BLUFF.ordinal()] = new Skill(charisma); bonusIndex.put("Bluff", skills[skillType.BLUFF.ordinal()].myBonus);
-		skills[skillType.CLIMB.ordinal()] = new Skill(strength, ACP); bonusIndex.put("Climb", skills[skillType.CLIMB.ordinal()].myBonus);
-		skills[skillType.CRAFT_A.ordinal()] = new Skill(intelligence); bonusIndex.put("Craft A", skills[skillType.CRAFT_A.ordinal()].myBonus);
-		skills[skillType.CRAFT_B.ordinal()] = new Skill(intelligence); bonusIndex.put("Craft B", skills[skillType.CRAFT_B.ordinal()].myBonus);
-		skills[skillType.DIPLOMACY.ordinal()] = new Skill(charisma); bonusIndex.put("Diplomacy", skills[skillType.DIPLOMACY.ordinal()].myBonus);
-		skills[skillType.DISABLE_DEVICE.ordinal()] = new Skill(dexterity, ACP); bonusIndex.put("Disable Device", skills[skillType.DISABLE_DEVICE.ordinal()].myBonus);
-		skills[skillType.DISGUISE.ordinal()] = new Skill(charisma); bonusIndex.put("Disguise", skills[skillType.DISGUISE.ordinal()].myBonus);
-		skills[skillType.ESCAPE_ARTIST.ordinal()] = new Skill(dexterity, ACP); bonusIndex.put("Escape Artist", skills[skillType.ESCAPE_ARTIST.ordinal()].myBonus);
-		skills[skillType.FLY.ordinal()] = new Skill(dexterity, ACP); bonusIndex.put("Fly", skills[skillType.FLY.ordinal()].myBonus);
-		skills[skillType.HANDLE_ANIMAL.ordinal()] = new Skill(charisma); bonusIndex.put("Handle Animal", skills[skillType.HANDLE_ANIMAL.ordinal()].myBonus);
-		skills[skillType.HEAL.ordinal()] = new Skill(wisdom); bonusIndex.put("Heal", skills[skillType.HEAL.ordinal()].myBonus);
-		skills[skillType.INTIMIDATE.ordinal()] = new Skill(charisma); bonusIndex.put("Intimidate", skills[skillType.INTIMIDATE.ordinal()].myBonus);
-		skills[skillType.KNOWLEDGE_ARCANA.ordinal()] = new Skill(intelligence); bonusIndex.put("Knowledge (Arcana)", skills[skillType.KNOWLEDGE_ARCANA.ordinal()].myBonus);
-		skills[skillType.KNOWLEDGE_DUNGEONEERING.ordinal()] = new Skill(intelligence); bonusIndex.put("Knowledge (Dungeoneering)", skills[skillType.KNOWLEDGE_DUNGEONEERING.ordinal()].myBonus);
-		skills[skillType.KNOWLEDGE_ENGINEERING.ordinal()] = new Skill(intelligence); bonusIndex.put("Knowledge (Engineering)", skills[skillType.KNOWLEDGE_ENGINEERING.ordinal()].myBonus);
-		skills[skillType.KNOWLEDGE_GEOGRAPHY.ordinal()] = new Skill(intelligence); bonusIndex.put("Knowledge (Geography)", skills[skillType.KNOWLEDGE_GEOGRAPHY.ordinal()].myBonus);
-		skills[skillType.KNOWLEDGE_HISTORY.ordinal()] = new Skill(intelligence); bonusIndex.put("Knowledge (History)", skills[skillType.KNOWLEDGE_HISTORY.ordinal()].myBonus);
-		skills[skillType.KNOWLEDGE_LOCAL.ordinal()] = new Skill(intelligence); bonusIndex.put("Knowledge (Local)", skills[skillType.KNOWLEDGE_LOCAL.ordinal()].myBonus);
-		skills[skillType.KNOWLEDGE_NATURE.ordinal()] = new Skill(intelligence); bonusIndex.put("Knowledge (Nature)", skills[skillType.KNOWLEDGE_NATURE.ordinal()].myBonus);
-		skills[skillType.KNOWLEDGE_NOBILITY.ordinal()] = new Skill(intelligence); bonusIndex.put("Knowledge (Nobility)", skills[skillType.KNOWLEDGE_NOBILITY.ordinal()].myBonus);
-		skills[skillType.KNOWLEDGE_PLANES.ordinal()] = new Skill(intelligence); bonusIndex.put("Knowledge (Planes)", skills[skillType.KNOWLEDGE_PLANES.ordinal()].myBonus);
-		skills[skillType.KNOWLEDGE_RELIGION.ordinal()] = new Skill(intelligence); bonusIndex.put("Knowledge (Religion)", skills[skillType.KNOWLEDGE_RELIGION.ordinal()].myBonus);
-		skills[skillType.LINGUISTICS.ordinal()] = new Skill(intelligence); bonusIndex.put("Linguistics", skills[skillType.LINGUISTICS.ordinal()].myBonus);
-		skills[skillType.PERCEPTION.ordinal()] = new Skill(wisdom); bonusIndex.put("Perception", skills[skillType.PERCEPTION.ordinal()].myBonus);
-		skills[skillType.PERFORM_A.ordinal()] = new Skill(charisma); bonusIndex.put("Perform A", skills[skillType.PERFORM_A.ordinal()].myBonus);
-		skills[skillType.PERFORM_B.ordinal()] = new Skill(charisma); bonusIndex.put("Perform B", skills[skillType.PERFORM_B.ordinal()].myBonus);
-		skills[skillType.PROFESSION_A.ordinal()] = new Skill(wisdom); bonusIndex.put("Profession A", skills[skillType.PROFESSION_A.ordinal()].myBonus);
-		skills[skillType.PROFESSION_B.ordinal()] = new Skill(wisdom); bonusIndex.put("Profession B", skills[skillType.PROFESSION_B.ordinal()].myBonus);
-		skills[skillType.RIDE.ordinal()] = new Skill(dexterity, ACP); bonusIndex.put("Ride", skills[skillType.RIDE.ordinal()].myBonus);
-		skills[skillType.SENSE_MOTIVE.ordinal()] = new Skill(wisdom); bonusIndex.put("Sense Motive", skills[skillType.SENSE_MOTIVE.ordinal()].myBonus);
-		skills[skillType.SLEIGHT_OF_HAND.ordinal()] = new Skill(dexterity, ACP); bonusIndex.put("Sleight of Hand", skills[skillType.SLEIGHT_OF_HAND.ordinal()].myBonus);
-		skills[skillType.SPELLCRAFT.ordinal()] = new Skill(intelligence); bonusIndex.put("Spellcraft", skills[skillType.SPELLCRAFT.ordinal()].myBonus);
-		skills[skillType.STEALTH.ordinal()] = new Skill(dexterity, ACP); bonusIndex.put("Stealth", skills[skillType.STEALTH.ordinal()].myBonus);
-		skills[skillType.SURVIVAL.ordinal()] = new Skill(wisdom); bonusIndex.put("Survival", skills[skillType.SURVIVAL.ordinal()].myBonus);
-		skills[skillType.SWIM.ordinal()] = new Skill(strength, ACP); bonusIndex.put("Swim", skills[skillType.SWIM.ordinal()].myBonus);
-		skills[skillType.USE_MAGIC_DEVICE.ordinal()] = new Skill(charisma); bonusIndex.put("Use Magic Device", skills[skillType.USE_MAGIC_DEVICE.ordinal()].myBonus);
+		skills[skillType.ACROBATICS.ordinal()] = new Skill(abilityScores.getDexterity(), ACP); bonusIndex.put("Acrobatics", skills[skillType.ACROBATICS.ordinal()].myBonus);
+		skills[skillType.APPRAISE.ordinal()] = new Skill(abilityScores.getIntelligence()); bonusIndex.put("Appraise", skills[skillType.APPRAISE.ordinal()].myBonus);
+		skills[skillType.BLUFF.ordinal()] = new Skill(abilityScores.getCharisma()); bonusIndex.put("Bluff", skills[skillType.BLUFF.ordinal()].myBonus);
+		skills[skillType.CLIMB.ordinal()] = new Skill(abilityScores.getStrength(), ACP); bonusIndex.put("Climb", skills[skillType.CLIMB.ordinal()].myBonus);
+		skills[skillType.CRAFT_A.ordinal()] = new Skill(abilityScores.getIntelligence()); bonusIndex.put("Craft A", skills[skillType.CRAFT_A.ordinal()].myBonus);
+		skills[skillType.CRAFT_B.ordinal()] = new Skill(abilityScores.getIntelligence()); bonusIndex.put("Craft B", skills[skillType.CRAFT_B.ordinal()].myBonus);
+		skills[skillType.DIPLOMACY.ordinal()] = new Skill(abilityScores.getCharisma()); bonusIndex.put("Diplomacy", skills[skillType.DIPLOMACY.ordinal()].myBonus);
+		skills[skillType.DISABLE_DEVICE.ordinal()] = new Skill(abilityScores.getDexterity(), ACP); bonusIndex.put("Disable Device", skills[skillType.DISABLE_DEVICE.ordinal()].myBonus);
+		skills[skillType.DISGUISE.ordinal()] = new Skill(abilityScores.getCharisma()); bonusIndex.put("Disguise", skills[skillType.DISGUISE.ordinal()].myBonus);
+		skills[skillType.ESCAPE_ARTIST.ordinal()] = new Skill(abilityScores.getDexterity(), ACP); bonusIndex.put("Escape Artist", skills[skillType.ESCAPE_ARTIST.ordinal()].myBonus);
+		skills[skillType.FLY.ordinal()] = new Skill(abilityScores.getDexterity(), ACP); bonusIndex.put("Fly", skills[skillType.FLY.ordinal()].myBonus);
+		skills[skillType.HANDLE_ANIMAL.ordinal()] = new Skill(abilityScores.getCharisma()); bonusIndex.put("Handle Animal", skills[skillType.HANDLE_ANIMAL.ordinal()].myBonus);
+		skills[skillType.HEAL.ordinal()] = new Skill(abilityScores.getWisdom()); bonusIndex.put("Heal", skills[skillType.HEAL.ordinal()].myBonus);
+		skills[skillType.INTIMIDATE.ordinal()] = new Skill(abilityScores.getCharisma()); bonusIndex.put("Intimidate", skills[skillType.INTIMIDATE.ordinal()].myBonus);
+		skills[skillType.KNOWLEDGE_ARCANA.ordinal()] = new Skill(abilityScores.getIntelligence()); bonusIndex.put("Knowledge (Arcana)", skills[skillType.KNOWLEDGE_ARCANA.ordinal()].myBonus);
+		skills[skillType.KNOWLEDGE_DUNGEONEERING.ordinal()] = new Skill(abilityScores.getIntelligence()); bonusIndex.put("Knowledge (Dungeoneering)", skills[skillType.KNOWLEDGE_DUNGEONEERING.ordinal()].myBonus);
+		skills[skillType.KNOWLEDGE_ENGINEERING.ordinal()] = new Skill(abilityScores.getIntelligence()); bonusIndex.put("Knowledge (Engineering)", skills[skillType.KNOWLEDGE_ENGINEERING.ordinal()].myBonus);
+		skills[skillType.KNOWLEDGE_GEOGRAPHY.ordinal()] = new Skill(abilityScores.getIntelligence()); bonusIndex.put("Knowledge (Geography)", skills[skillType.KNOWLEDGE_GEOGRAPHY.ordinal()].myBonus);
+		skills[skillType.KNOWLEDGE_HISTORY.ordinal()] = new Skill(abilityScores.getIntelligence()); bonusIndex.put("Knowledge (History)", skills[skillType.KNOWLEDGE_HISTORY.ordinal()].myBonus);
+		skills[skillType.KNOWLEDGE_LOCAL.ordinal()] = new Skill(abilityScores.getIntelligence()); bonusIndex.put("Knowledge (Local)", skills[skillType.KNOWLEDGE_LOCAL.ordinal()].myBonus);
+		skills[skillType.KNOWLEDGE_NATURE.ordinal()] = new Skill(abilityScores.getIntelligence()); bonusIndex.put("Knowledge (Nature)", skills[skillType.KNOWLEDGE_NATURE.ordinal()].myBonus);
+		skills[skillType.KNOWLEDGE_NOBILITY.ordinal()] = new Skill(abilityScores.getIntelligence()); bonusIndex.put("Knowledge (Nobility)", skills[skillType.KNOWLEDGE_NOBILITY.ordinal()].myBonus);
+		skills[skillType.KNOWLEDGE_PLANES.ordinal()] = new Skill(abilityScores.getIntelligence()); bonusIndex.put("Knowledge (Planes)", skills[skillType.KNOWLEDGE_PLANES.ordinal()].myBonus);
+		skills[skillType.KNOWLEDGE_RELIGION.ordinal()] = new Skill(abilityScores.getIntelligence()); bonusIndex.put("Knowledge (Religion)", skills[skillType.KNOWLEDGE_RELIGION.ordinal()].myBonus);
+		skills[skillType.LINGUISTICS.ordinal()] = new Skill(abilityScores.getIntelligence()); bonusIndex.put("Linguistics", skills[skillType.LINGUISTICS.ordinal()].myBonus);
+		skills[skillType.PERCEPTION.ordinal()] = new Skill(abilityScores.getWisdom()); bonusIndex.put("Perception", skills[skillType.PERCEPTION.ordinal()].myBonus);
+		skills[skillType.PERFORM_A.ordinal()] = new Skill(abilityScores.getCharisma()); bonusIndex.put("Perform A", skills[skillType.PERFORM_A.ordinal()].myBonus);
+		skills[skillType.PERFORM_B.ordinal()] = new Skill(abilityScores.getCharisma()); bonusIndex.put("Perform B", skills[skillType.PERFORM_B.ordinal()].myBonus);
+		skills[skillType.PROFESSION_A.ordinal()] = new Skill(abilityScores.getWisdom()); bonusIndex.put("Profession A", skills[skillType.PROFESSION_A.ordinal()].myBonus);
+		skills[skillType.PROFESSION_B.ordinal()] = new Skill(abilityScores.getWisdom()); bonusIndex.put("Profession B", skills[skillType.PROFESSION_B.ordinal()].myBonus);
+		skills[skillType.RIDE.ordinal()] = new Skill(abilityScores.getDexterity(), ACP); bonusIndex.put("Ride", skills[skillType.RIDE.ordinal()].myBonus);
+		skills[skillType.SENSE_MOTIVE.ordinal()] = new Skill(abilityScores.getWisdom()); bonusIndex.put("Sense Motive", skills[skillType.SENSE_MOTIVE.ordinal()].myBonus);
+		skills[skillType.SLEIGHT_OF_HAND.ordinal()] = new Skill(abilityScores.getDexterity(), ACP); bonusIndex.put("Sleight of Hand", skills[skillType.SLEIGHT_OF_HAND.ordinal()].myBonus);
+		skills[skillType.SPELLCRAFT.ordinal()] = new Skill(abilityScores.getIntelligence()); bonusIndex.put("Spellcraft", skills[skillType.SPELLCRAFT.ordinal()].myBonus);
+		skills[skillType.STEALTH.ordinal()] = new Skill(abilityScores.getDexterity(), ACP); bonusIndex.put("Stealth", skills[skillType.STEALTH.ordinal()].myBonus);
+		skills[skillType.SURVIVAL.ordinal()] = new Skill(abilityScores.getWisdom()); bonusIndex.put("Survival", skills[skillType.SURVIVAL.ordinal()].myBonus);
+		skills[skillType.SWIM.ordinal()] = new Skill(abilityScores.getStrength(), ACP); bonusIndex.put("Swim", skills[skillType.SWIM.ordinal()].myBonus);
+		skills[skillType.USE_MAGIC_DEVICE.ordinal()] = new Skill(abilityScores.getCharisma()); bonusIndex.put("Use Magic Device", skills[skillType.USE_MAGIC_DEVICE.ordinal()].myBonus);
 
 		languages = new LinkedList<String>();
 		// SQ
 		// Combat Gear
 		// Other Gear
 		// Other
+	}
+
+	private void putAbilityScoresInNumericalIndex() {
+		bonusIndex.put("Str", abilityScores.getStrength());
+		bonusIndex.put("Dex", abilityScores.getDexterity());
+		bonusIndex.put("Con", abilityScores.getConstitution());
+		bonusIndex.put("Int", abilityScores.getIntelligence());
+		bonusIndex.put("Wis", abilityScores.getWisdom());
+		bonusIndex.put("Cha", abilityScores.getCharisma());
 	}
 
 	/**
@@ -261,17 +264,7 @@ public class MFCharacter {
 		// Ranged attacks
 		// Special attacks
 		sheet.append("\n----------\nStatistics\n----------\nStr ");
-		sheet.append(strength);
-		sheet.append(", Dex ");
-		sheet.append(dexterity);
-		sheet.append(", Con ");
-		sheet.append(constitution);
-		sheet.append(", Int ");
-		sheet.append(intelligence);
-		sheet.append(", Wis ");
-		sheet.append(wisdom);
-		sheet.append(", Cha ");
-		sheet.append(charisma);
+		sheet.append(abilityScores);
 		sheet.append("\nBase Atk ");
 		sheet.append(BAB);
 		sheet.append("; CMB ");
@@ -418,6 +411,30 @@ public class MFCharacter {
 	public void giveLanguage(String language) {
 		if (language != null)
 			languages.add(language);
+	}
+
+	public void setStrength(int base) {
+		abilityScores.setStrength(AbilityScore.getAbilityScoreWithBase(base));
+	}
+	
+	public void setDexterity(int base) {
+		abilityScores.setDexterity(AbilityScore.getAbilityScoreWithBase(base));
+	}
+	
+	public void setConstitution(int base) {
+		abilityScores.setConstitution(AbilityScore.getAbilityScoreWithBase(base));
+	}
+	
+	public void setIntelligence(int base) {
+		abilityScores.setIntelligence(AbilityScore.getAbilityScoreWithBase(base));
+	}
+	
+	public void setWisdom(int base) {
+		abilityScores.setWisdom(AbilityScore.getAbilityScoreWithBase(base));
+	}
+	
+	public void setCharisma(int base) {
+		abilityScores.setCharisma(AbilityScore.getAbilityScoreWithBase(base));
 	}
 
 }

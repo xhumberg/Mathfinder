@@ -8,7 +8,7 @@ public class StatisticTest {
 
 	@Test
 	void testStartsAtZero() {
-		Statistic hehe = Statistic.createFlatStatistic();
+		Numerical hehe = Statistic.createFlatStatistic();
 		assertEquals(0, hehe.getAdjustmentValue());
 	}
 	
@@ -117,7 +117,7 @@ public class StatisticTest {
 	
 	@Test
 	void testSetBaseForStatistic() {
-		Statistic CMD = Statistic.createFlatStatistic();
+		Numerical CMD = Statistic.createFlatStatistic();
 		CMD.setBase(10);
 		assertEquals(10, CMD.getAdjustmentValue());
 	}
