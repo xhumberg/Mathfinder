@@ -1,3 +1,4 @@
 bin/*
 bin/characterModel/MFCharacter.class
 bin/characterModel/MFCharacterTest.class
+*.class

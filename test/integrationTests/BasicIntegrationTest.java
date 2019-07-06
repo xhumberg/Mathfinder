@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 class BasicIntegrationTest {
 
 	@Test
-	void test() {
+	void testDaveTheBarbarian() {
 		fail("Not yet implemented");
 	}
 
