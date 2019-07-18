@@ -170,4 +170,14 @@ public class StatisticTest {
 		attack.addBonus("Morale", "Morale", 2);
 		assertEquals("2", attack.toString());
 	}
+	
+	@Test
+	void testOverrideValue() {
+		Statistic attack = Statistic.createStatisticWithBaseValue(10);
+		assertEquals(10, attack.getAdjustmentValue());
+		attack.addBonus("Base", "Base", 7);
+		assertEquals(7, attack.getAdjustmentValue());
+		attack.addBonus("Base", "Base", 1);
+		assertEquals(1, attack.getAdjustmentValue());
+	}
 }

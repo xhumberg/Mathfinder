@@ -8,10 +8,10 @@ public abstract class Numerical {
 	private final boolean NON_STACKING = false;
 
 	private LinkedList<Numerical> numericalAdjustments;
-	private HashMap<String, NumericalEffect> nonStackingNumericalEffects;
-	private NumericalEffect circumstanceBonus; // circumstance bonuses always stack
-	private NumericalEffect dodgeBonus; // dodge bonuses always stack
-	private NumericalEffect penalties; // penalties always stack
+	private HashMap<String, BonusType> nonStackingNumericalEffects;
+	private BonusType circumstanceBonus; // circumstance bonuses always stack
+	private BonusType dodgeBonus; // dodge bonuses always stack
+	private BonusType penalties; // penalties always stack
 
 	int total; 
 
@@ -25,7 +25,7 @@ public abstract class Numerical {
 	public void addBonus(String sourceName, String typeName, int bonus) {
 		if (!tryToAddToStackingTypes(sourceName, typeName, bonus)) {
 			ensureNonStackingEffectExists(typeName);
-			NumericalEffect effect = nonStackingNumericalEffects.get(typeName);
+			BonusType effect = nonStackingNumericalEffects.get(typeName);
 			effect.addAdjustment(sourceName, bonus);
 		}
 	}
@@ -43,21 +43,21 @@ public abstract class Numerical {
 
 	private void addCircumstanceBonus(String sourceName, int bonus) {
 		if (circumstanceBonus == null)
-			circumstanceBonus = new NumericalEffect(STACKING);
+			circumstanceBonus = new BonusType(STACKING);
 		circumstanceBonus.addAdjustment(sourceName, bonus);
 	}
 
 	private void addDodgeBonus(String sourceName, int bonus) {
 		if (dodgeBonus == null)
-			dodgeBonus = new NumericalEffect(STACKING);
+			dodgeBonus = new BonusType(STACKING);
 		dodgeBonus.addAdjustment(sourceName, bonus);
 	}
 
 	private void ensureNonStackingEffectExists(String typeName) {
 		if (nonStackingNumericalEffects == null)
-			nonStackingNumericalEffects = new HashMap<String, NumericalEffect>();
+			nonStackingNumericalEffects = new HashMap<String, BonusType>();
 		if (!nonStackingNumericalEffects.containsKey(typeName)) {
-			NumericalEffect effect = new NumericalEffect(NON_STACKING);
+			BonusType effect = new BonusType(NON_STACKING);
 			nonStackingNumericalEffects.put(typeName, effect);
 		}
 	}
@@ -70,7 +70,7 @@ public abstract class Numerical {
 
 	public void addPenalty(String sourceName, int penalty) {
 		if (penalties == null)
-			penalties = new NumericalEffect(STACKING);
+			penalties = new BonusType(STACKING);
 		penalties.addAdjustment(sourceName, penalty);
 	}
 
@@ -91,20 +91,20 @@ public abstract class Numerical {
 	
 	private void addNonStackingNumericalEffectsToTotal() {
 		if (nonStackingNumericalEffects != null)
-			for (NumericalEffect e : nonStackingNumericalEffects.values())
-				total += e.getValue();
+			for (BonusType e : nonStackingNumericalEffects.values())
+				total += e.getAdjustmentAmount();
 	}
 	
 	private void addStackingBonusToTotal() {
 		if (circumstanceBonus != null)
-			total += circumstanceBonus.getValue();
+			total += circumstanceBonus.getAdjustmentAmount();
 		if (dodgeBonus != null)
-			total += dodgeBonus.getValue();
+			total += dodgeBonus.getAdjustmentAmount();
 	}
 	
 	private void addPenaltiesToTotal() {
 		if (penalties != null)
-			total += penalties.getValue();
+			total += penalties.getAdjustmentAmount();
 	}
 
 	public void reset() {
@@ -125,7 +125,7 @@ public abstract class Numerical {
 
 	public void removeSource(String source) {
 		if (nonStackingNumericalEffects != null)
-			for (NumericalEffect e : nonStackingNumericalEffects.values())
+			for (BonusType e : nonStackingNumericalEffects.values())
 				e.removeSource(source);
 		if (circumstanceBonus != null)
 			circumstanceBonus.removeSource(source);
