@@ -82,11 +82,7 @@ public class BonusType {
 	}
 	
 	private boolean effectAtIndexHasSource(int index, String source) {
-		if (effects.size() > index) {
 			return effects.get(index).source.equals(source);
-		} else {
-			return false;
-		}
 	}
 	
 	private void removeEffectsWithIndexes(List<Integer> indexes) {
@@ -94,5 +90,14 @@ public class BonusType {
 		for (int i = indexes.size() - 1; i >= 0; i--) {
 			effects.remove(i);
 		}
+	}
+
+	public String toVerboseString() {
+		StringBuilder sb = new StringBuilder(toString() + " [");
+		for (EffectWithSource effect : effects) {
+			sb.append(effect.toString()).append(", ");
+		}
+		sb.replace(sb.length()-2, sb.length(), "]");
+		return sb.toString();
 	}
 }
