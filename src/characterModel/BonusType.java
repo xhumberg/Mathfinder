@@ -1,20 +1,33 @@
 package characterModel;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class BonusType {
-	private List<EffectWithSource> effects;
-	boolean doesStack;
 
-	public BonusType(boolean doesStack) {
+	private class EffectWithSource {
+		protected String source;
+		protected Integer value;
+		
+		public EffectWithSource(String source, Integer value) {
+			this.source = source;
+			this.value = value;
+		}
+		
+		public String toString() {
+			return source + ": " + value;
+		}
+	}
+	
+	private String type;
+	private List<EffectWithSource> effects;
+	private boolean doesStack;
+
+	public BonusType(String type, boolean doesStack) {
 		effects = new LinkedList<EffectWithSource>();
 		this.doesStack = doesStack;
-	}
-
-	public BonusType(String source, Integer value, boolean doesStack) {
-		this(doesStack);
-		addAdjustment(source, value);
+		this.type = type;
 	}
 
 	public void addAdjustment(String source, Integer value) {
@@ -38,6 +51,10 @@ public class BonusType {
 		}
 		return null;
 	}
+	
+	public String toString() {
+		return type + ": " + String.valueOf(getAdjustmentAmount());
+	}
 
 	public int getAdjustmentAmount() {
 		int value = 0;
@@ -49,36 +66,33 @@ public class BonusType {
 		return value;
 	}
 
-	private class EffectWithSource {
-		protected String source;
-		protected Integer value;
-		
-		public EffectWithSource(String source, Integer value) {
-			this.source = source;
-			this.value = value;
-		}
-	}
-
-	public boolean removeSource(String source) {
-		int foundIndex = -1;
-		for (int i = 0; i < effects.size(); i++) {
-			if (effects.get(i).source.equals(source)) {
-				foundIndex = i;
-				break;
-			}
-		}
-		if (foundIndex >= 0) {
-			effects.remove(foundIndex);
-			
-			//Ensure no more effects from this source exist
-			removeSource(source);
-			
-			return true;
-		}
-		return false;
+	public void removeSource(String source) {
+		List<Integer> foundIndexes = findIndexesOfEffectsWithSource(source);
+		removeEffectsWithIndexes(foundIndexes);
 	}
 	
-	public String toString() {
-		return String.valueOf(getAdjustmentAmount());
+	private List<Integer> findIndexesOfEffectsWithSource(String source) {
+		ArrayList<Integer> foundIndexes = new ArrayList<Integer>();
+		for (int i = 0; i < effects.size(); i++) {
+			if (effectAtIndexHasSource(i, source)) {
+				foundIndexes.add(i);
+			}
+		}
+		return foundIndexes;
+	}
+	
+	private boolean effectAtIndexHasSource(int index, String source) {
+		if (effects.size() > index) {
+			return effects.get(index).source.equals(source);
+		} else {
+			return false;
+		}
+	}
+	
+	private void removeEffectsWithIndexes(List<Integer> indexes) {
+		//Remove from the back so the indexes don't change.
+		for (int i = indexes.size() - 1; i >= 0; i--) {
+			effects.remove(i);
+		}
 	}
 }

@@ -13,7 +13,7 @@ public abstract class Numerical {
 	private BonusType dodgeBonus; // dodge bonuses always stack
 	private BonusType penalties; // penalties always stack
 
-	int total; 
+	int total;
 
 	protected Numerical() {
 	}
@@ -43,13 +43,13 @@ public abstract class Numerical {
 
 	private void addCircumstanceBonus(String sourceName, int bonus) {
 		if (circumstanceBonus == null)
-			circumstanceBonus = new BonusType(STACKING);
+			circumstanceBonus = new BonusType("Circumstance", STACKING);
 		circumstanceBonus.addAdjustment(sourceName, bonus);
 	}
 
 	private void addDodgeBonus(String sourceName, int bonus) {
 		if (dodgeBonus == null)
-			dodgeBonus = new BonusType(STACKING);
+			dodgeBonus = new BonusType("Dodge", STACKING);
 		dodgeBonus.addAdjustment(sourceName, bonus);
 	}
 
@@ -57,7 +57,7 @@ public abstract class Numerical {
 		if (nonStackingNumericalEffects == null)
 			nonStackingNumericalEffects = new HashMap<String, BonusType>();
 		if (!nonStackingNumericalEffects.containsKey(typeName)) {
-			BonusType effect = new BonusType(NON_STACKING);
+			BonusType effect = new BonusType(typeName, NON_STACKING);
 			nonStackingNumericalEffects.put(typeName, effect);
 		}
 	}
@@ -70,7 +70,7 @@ public abstract class Numerical {
 
 	public void addPenalty(String sourceName, int penalty) {
 		if (penalties == null)
-			penalties = new BonusType(STACKING);
+			penalties = new BonusType("Penalty", STACKING);
 		penalties.addAdjustment(sourceName, penalty);
 	}
 
@@ -88,20 +88,20 @@ public abstract class Numerical {
 			for (Numerical num : numericalAdjustments)
 				total += num.getAdjustmentValue();
 	}
-	
+
 	private void addNonStackingNumericalEffectsToTotal() {
 		if (nonStackingNumericalEffects != null)
 			for (BonusType e : nonStackingNumericalEffects.values())
 				total += e.getAdjustmentAmount();
 	}
-	
+
 	private void addStackingBonusToTotal() {
 		if (circumstanceBonus != null)
 			total += circumstanceBonus.getAdjustmentAmount();
 		if (dodgeBonus != null)
 			total += dodgeBonus.getAdjustmentAmount();
 	}
-	
+
 	private void addPenaltiesToTotal() {
 		if (penalties != null)
 			total += penalties.getAdjustmentAmount();
@@ -116,7 +116,13 @@ public abstract class Numerical {
 	}
 
 	public String toString() {
-		return String.valueOf(getAdjustmentValue());
+		String generatedString =  String.valueOf(getAdjustmentValue()) + " = " 
+				+ (circumstanceBonus != null ? circumstanceBonus + " " : "")
+				+ (dodgeBonus != null ? dodgeBonus + " " : "")
+				+ (penalties != null ? penalties + " " : "")
+				+ (nonStackingNumericalEffects != null && !nonStackingNumericalEffects.isEmpty() ? nonStackingNumericalEffects.values() + " " : ""
+				+ (numericalAdjustments != null && !numericalAdjustments.isEmpty() ? numericalAdjustments : ""));
+		return generatedString.trim();
 	}
 
 	public void setBase(int val) {

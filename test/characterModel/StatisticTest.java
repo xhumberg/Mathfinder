@@ -166,9 +166,9 @@ public class StatisticTest {
 	@Test
 	void testToString() {
 		Statistic attack = Statistic.createFlatStatistic();
-		assertEquals("0", attack.toString());
+		assertEquals("0 =", attack.toString());
 		attack.addBonus("Morale", "Morale", 2);
-		assertEquals("2", attack.toString());
+		assertEquals("2 = [Morale: 2]", attack.toString());
 	}
 	
 	@Test
