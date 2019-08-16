@@ -5,20 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class BonusType {
-
-	private class EffectWithSource {
-		protected String source;
-		protected Integer value;
-		
-		public EffectWithSource(String source, Integer value) {
-			this.source = source;
-			this.value = value;
-		}
-		
-		public String toString() {
-			return source + ": " + value;
-		}
-	}
 	
 	private String type;
 	private List<EffectWithSource> effects;

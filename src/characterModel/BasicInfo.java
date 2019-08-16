@@ -81,19 +81,13 @@ public class BasicInfo {
 	
 	public String toString() {
 		StringBuilder stringRepresentation = new StringBuilder();
-		stringRepresentation.append(name);
-		stringRepresentation.append("\n");
-		stringRepresentation.append(race);
-		stringRepresentation.append(" ");
-		stringRepresentation.append(characterClass);
-		stringRepresentation.append(" ");
-		stringRepresentation.append(level);
-		stringRepresentation.append("\n");
-		stringRepresentation.append(alignment);
-		stringRepresentation.append(" ");
-		stringRepresentation.append(size);
-		stringRepresentation.append(" ");
-		stringRepresentation.append(creatureType);
+		stringRepresentation.append(name).append("\n")
+			.append(race).append(" ")
+			.append(characterClass).append(" ")
+			.append(level).append("\n")
+			.append(alignment).append(" ")
+			.append(size).append(" ")
+			.append(creatureType);
 		return stringRepresentation.toString();
 	}
 }

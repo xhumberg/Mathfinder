@@ -13,18 +13,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class MathfinderXMLReader {
-	private Node root;
+public abstract class MathfinderXMLReader<T> {
+	private XmlNode root;
 	
-	public MathfinderXMLReader(String filename) throws IOException {
+	protected MathfinderXMLReader(String filename) throws IOException {
 		root = null;
 		try {
-			File XMLFile = new File(filename);
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder;
-			dBuilder = dbFactory.newDocumentBuilder();
-			Document xml = dBuilder.parse(XMLFile);
-			root = xml.getDocumentElement();
+			setupRootNode(filename);
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 			return;
@@ -34,13 +29,24 @@ public class MathfinderXMLReader {
 		}
 	}
 	
-	public boolean isOfType(String type) {
-		if (root == null)
-			return false;
-		return root.getNodeName() == type;
+	public abstract T decodeFromFile();
+
+	private void setupRootNode(String filename) throws ParserConfigurationException, SAXException, IOException {
+		File XMLFile = new File(filename);
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder;
+		dBuilder = dbFactory.newDocumentBuilder();
+		Document xml = dBuilder.parse(XMLFile);
+		root = new XmlNode(xml.getDocumentElement());
 	}
 	
-	public String getName() {
+	protected boolean rootIsOfType(String type) {
+		if (root == null)
+			return false;
+		return root.getName() == type;
+	}
+	
+	protected String getName() {
 		if (root == null)
 			return null;
 		return ((Element) root).getAttribute("name");

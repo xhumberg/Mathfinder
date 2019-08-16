@@ -1,24 +1,22 @@
 package mathfinderXMLWrapper;
 
-import characterModel.DiceType;
+import java.io.IOException;
 
-public class ClassXMLLoader {
-//	public static ClassLevel loadClassLevelFromXML(String filename) {
-//		filename = formatFilename(filename);
-//		MathfinderXMLReader xmlReader = new MathfinderXMLReader(filename);
-//		if (!xmlReader.isOfType("class")) {
-//			throw new XMLFormatMismatchException("XML is not a class");
-//		}
-//		String className = xmlReader.getName();
-//		DiceType hitDice = DiceType.valueOf(xmlReader.getNodeText("HD"));
-//		
-//	}
+import characterModel.CharacterClass;
 
-	private static String formatFilename(String filename) {
-		if (!filename.endsWith(".xml"))
-			return filename + ".xml";
-		return filename;
+public class ClassXMLLoader extends MathfinderXMLReader<CharacterClass>{
+
+	public ClassXMLLoader(String filename) throws IOException, XMLFormatMismatchException {
+		super(filename);
+		if (!rootIsOfType("Class")) {
+			throw new XMLFormatMismatchException("File is not a Class XML");
+		}
 	}
-	
-	
+
+	@Override
+	public CharacterClass decodeFromFile() {
+		String className = getName();
+		
+		return null;
+	}
 }
