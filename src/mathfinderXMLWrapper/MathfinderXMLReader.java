@@ -53,7 +53,8 @@ public abstract class MathfinderXMLReader<T> {
 	}
 	
 	public String getNodeText(String tagName) {
-		return getNode(root, tagName).getTextContent();
+//		return getNode(root, tagName).getTextContent();
+		return null;
 	}
 
 	private Node getNode(Node parent, String tagName) {

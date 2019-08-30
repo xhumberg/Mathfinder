@@ -1,13 +1,13 @@
 package integrationTests;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-class BasicIntegrationTest {
+public class BasicIntegrationTest {
 
 	@Test
-	void testDaveTheBarbarian() {
+	public void testDaveTheBarbarian() {
 		fail("Not yet implemented");
 	}
 

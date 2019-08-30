@@ -1,18 +1,19 @@
 package characterModel;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-class BonusTypeTest {
+public class BonusTypeTest {
 
 	@Test
-	void initTest() {
+	public void initTest() {
+		@SuppressWarnings("unused")
 		BonusType bonus = new BonusType("Morale", false);
 	}
 	
 	@Test
-	void stackingDoesStackTest() {
+	public void stackingDoesStackTest() {
 		BonusType dodge = new BonusType("Dodge", true);
 		dodge.addAdjustment("Fighting Defensively", 3);
 		dodge.addAdjustment("Crane Style", 3);
@@ -22,7 +23,7 @@ class BonusTypeTest {
 	}
 
 	@Test
-	void noStackingDoesntStackTest() {
+	public void noStackingDoesntStackTest() {
 		BonusType enhancement = new BonusType("Enhancement", false);
 		enhancement.addAdjustment("Belt of Giant's Strength", 6);
 		enhancement.addAdjustment("Bull's Strength", 4);
@@ -31,7 +32,7 @@ class BonusTypeTest {
 	}
 	
 	@Test
-	void sameSourceOverwritesTest() {
+	public void sameSourceOverwritesTest() {
 		BonusType enhancement = new BonusType("Enhancement", false);
 		enhancement.addAdjustment("Belt of Giant's Strength", 4);
 		enhancement.addAdjustment("Belt of Giant's Strength", 6);
@@ -44,7 +45,7 @@ class BonusTypeTest {
 	}
 	
 	@Test
-	void removeSourceTest() {
+	public void removeSourceTest() {
 		BonusType dodge = new BonusType("Dodge", true);
 		dodge.addAdjustment("Fighting Defensively", 3);
 		dodge.addAdjustment("Crane Style", 3);
@@ -61,7 +62,7 @@ class BonusTypeTest {
 	}
 	
 	@Test
-	void testToString() {
+	public void testToString() {
 		BonusType dodge = new BonusType("Dodge", true);
 		dodge.addAdjustment("Fighting Defensively", 3);
 		dodge.addAdjustment("Crane Style", 2);

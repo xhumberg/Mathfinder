@@ -1,25 +1,25 @@
 package characterModel;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-class AbilityScoreTest {
+public class AbilityScoreTest {
 
 	@Test
-	void testFlatAbilityScoreIs10() {
+	public void testFlatAbilityScoreIs10() {
 		AbilityScore score = AbilityScore.getFlatAbilityScore();
 		assertEquals(10, score.getScore());
 	}
 	
 	@Test
-	void testBaseAbiltyScoreUpdatesProperly() {
+	public void testBaseAbiltyScoreUpdatesProperly() {
 		AbilityScore score = AbilityScore.getAbilityScoreWithBase(14);
 		assertEquals(14, score.getScore());
 	}
 	
 	@Test
-	void testAbilityScoreAdjustmentValueIsMod() {
+	public void testAbilityScoreAdjustmentValueIsMod() {
 		Numerical strength = AbilityScore.getAbilityScoreWithBase(7);
 		Numerical dexterity = AbilityScore.getAbilityScoreWithBase(17);
 		Numerical constitution = AbilityScore.getAbilityScoreWithBase(12);

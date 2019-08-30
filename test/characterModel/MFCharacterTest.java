@@ -1,19 +1,19 @@
 package characterModel;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-class MFCharacterTest {
+public class MFCharacterTest {
 	
 	@Test
-	void testGetName() {
+	public void testGetName() {
 		MFCharacter wizardBoi = new MFCharacter("Wizard Boi");
 		assertEquals("Wizard Boi", wizardBoi.getName());
 	}
 	
 	@Test
-	void testBlankStatBlock() {
+	public void testBlankStatBlock() {
 		MFCharacter dave = new MFCharacter("Dave");
 		String generatedStatBlock = dave.getStatBlock();
 		String expectedStatBlock = getExpectedBlankStatBlock();

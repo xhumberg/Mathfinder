@@ -1,26 +1,26 @@
 package characterModel;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 public class StatisticTest {
 
 	@Test
-	void testStartsAtZero() {
+	public void testStartsAtZero() {
 		Numerical hehe = Statistic.createFlatStatistic();
 		assertEquals(0, hehe.getAdjustmentValue());
 	}
 	
 	@Test
-	void testSingleBonusApplies() {
+	public void testSingleBonusApplies() {
 		Numerical testStat = Statistic.createFlatStatistic();
 		testStat.addBonus("testSource", "testType", 4);
 		assertEquals(4, testStat.getAdjustmentValue());
 	}
 
 	@Test
-	void testMultipleNonStackingBonusesApply() {
+	public void testMultipleNonStackingBonusesApply() {
 		Numerical strength = Statistic.createFlatStatistic();
 		strength.addBonus("Rage", "Morale", 4);
 		strength.addBonus("Mutagen", "Alchemical", 4);
@@ -28,14 +28,14 @@ public class StatisticTest {
 	}
 	
 	@Test
-	void testBaseApplies() {
+	public void testBaseApplies() {
 		Numerical strength = Statistic.createStatisticWithBaseValue(14);
 		strength.addBonus("Rage", "Morale", 4);
 		assertEquals(18, strength.getAdjustmentValue());
 	}
 	
 	@Test
-	void testThousandsOfNonStackingBonusesApply() {
+	public void testThousandsOfNonStackingBonusesApply() {
 		Numerical counter = Statistic.createFlatStatistic();
 		for (int i = 0; i < 50000; i++) {
 			counter.addBonus(String.valueOf(i), String.valueOf(i), 1);
@@ -44,7 +44,7 @@ public class StatisticTest {
 	}
 	
 	@Test
-	void testSinglePenaltyApplies() {
+	public void testSinglePenaltyApplies() {
 		Numerical strength = Statistic.createFlatStatistic();
 		strength.addBonus("Base", "Base", 25);
 		strength.addPenalty("Reduce Person", -2);
@@ -52,7 +52,7 @@ public class StatisticTest {
 	}
 	
 	@Test
-	void testThousandsOfPenaltiesApply() {
+	public void testThousandsOfPenaltiesApply() {
 		//TODO: figure out why this takes so long
 		Numerical counter = Statistic.createFlatStatistic();
 		for (int i = 0; i < 5000; i++) {
@@ -62,7 +62,7 @@ public class StatisticTest {
 	}
 	
 	@Test
-	void testStackingBonusesApply() {
+	public void testStackingBonusesApply() {
 		Numerical AC = Statistic.createFlatStatistic();
 		AC.addBonus("Dodge", "Dodge", 1);
 		AC.addBonus("Fighting Defensively", "Dodge", 3);
@@ -73,7 +73,7 @@ public class StatisticTest {
 	}
 	
 	@Test
-	void testOnlyHighestOfNonStackingBonusesApplies() {
+	public void testOnlyHighestOfNonStackingBonusesApplies() {
 		Numerical AC = Statistic.createFlatStatistic();
 		AC.addBonus("Armor", "Armor", 3);
 		AC.addBonus("Mage Armor", "Armor", 4);
@@ -81,7 +81,7 @@ public class StatisticTest {
 	}
 	
 	@Test
-	void testAddNumerical() {
+	public void testAddNumerical() {
 		Numerical Strength = Statistic.createFlatStatistic();
 		Strength.addBonus("Base", "Base", 4);
 		Numerical climb = Statistic.createFlatStatistic();
@@ -92,7 +92,7 @@ public class StatisticTest {
 	}
 	
 	@Test
-	void testAddMultipleNumericals() {
+	public void testAddMultipleNumericals() {
 		Numerical CMD = Statistic.createFlatStatistic();
 		Numerical Strength = Statistic.createStatisticWithBaseValue(4);
 		Numerical Dexterity = Statistic.createStatisticWithBaseValue(2);
@@ -102,7 +102,7 @@ public class StatisticTest {
 	}
 	
 	@Test
-	void testResetWithNumericalsAndValues() {
+	public void testResetWithNumericalsAndValues() {
 		Numerical CMD = Statistic.createFlatStatistic();
 		Numerical Strength = Statistic.createStatisticWithBaseValue(4);
 		Numerical Dexterity = Statistic.createStatisticWithBaseValue(2);
@@ -116,14 +116,14 @@ public class StatisticTest {
 	}
 	
 	@Test
-	void testSetBaseForStatistic() {
+	public void testSetBaseForStatistic() {
 		Numerical CMD = Statistic.createFlatStatistic();
 		CMD.setBase(10);
 		assertEquals(10, CMD.getAdjustmentValue());
 	}
 	
 	@Test
-	void testRemoveSource() {
+	public void testRemoveSource() {
 		Statistic attack = Statistic.createFlatStatistic();
 		attack.addNumerical(Statistic.createStatisticWithBaseValue(4));
 		attack.addBonus("Rage", "Morale", 4);
@@ -140,7 +140,7 @@ public class StatisticTest {
 	}
 	
 	@Test
-	void testAttemptToRemoveNonExistantSource() {
+	public void testAttemptToRemoveNonExistantSource() {
 		Statistic attack = Statistic.createFlatStatistic();
 		attack.addNumerical(Statistic.createStatisticWithBaseValue(4));
 		attack.addBonus("Rage", "Morale", 4);
@@ -156,7 +156,7 @@ public class StatisticTest {
 	}
 	
 	@Test
-	void testRemoveSourceBeforeAddingAnyBonuses() {
+	public void testRemoveSourceBeforeAddingAnyBonuses() {
 		Statistic attack = Statistic.createFlatStatistic();
 		assertEquals(0, attack.getAdjustmentValue());
 		attack.removeSource("Dragon");
@@ -164,7 +164,7 @@ public class StatisticTest {
 	}
 	
 	@Test
-	void testToString() {
+	public void testToString() {
 		Statistic attack = Statistic.createFlatStatistic();
 		assertEquals("0 =", attack.toString());
 		attack.addBonus("Morale", "Morale", 2);
@@ -172,7 +172,7 @@ public class StatisticTest {
 	}
 	
 	@Test
-	void testOverrideValue() {
+	public void testOverrideValue() {
 		Statistic attack = Statistic.createStatisticWithBaseValue(10);
 		assertEquals(10, attack.getAdjustmentValue());
 		attack.addBonus("Base", "Base", 7);
