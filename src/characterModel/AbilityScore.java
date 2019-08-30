@@ -9,7 +9,7 @@ public class AbilityScore extends Numerical {
 		return new AbilityScore(base);
 	}
 
-	public AbilityScore(int base) {
+	private AbilityScore(int base) {
 		super(base);
 	}
 	
